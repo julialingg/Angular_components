@@ -1,4 +1,4 @@
-import {TAB} from '@angular/cdk/keycodes';
+import { TAB } from '@angular/cdk/keycodes';
 import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
@@ -7,12 +7,12 @@ import {
   createMouseEvent,
   dispatchEvent,
 } from '../../testing/private';
-import {DOCUMENT} from '@angular/common';
-import {Component, NgZone} from '@angular/core';
-import {ComponentFixture, fakeAsync, flush, inject, TestBed, tick} from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
-import {A11yModule} from '../index';
-import {TOUCH_BUFFER_MS} from '../input-modality/input-modality-detector';
+import { DOCUMENT } from '@angular/common';
+import { Component, NgZone } from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { A11yModule } from '../index';
+import { TOUCH_BUFFER_MS } from '../input-modality/input-modality-detector';
 import {
   FocusMonitor,
   FocusMonitorDetectionMode,
@@ -38,7 +38,7 @@ describe('FocusMonitor', () => {
         provide: DOCUMENT,
         useFactory: () => {
           // We have to stub out the `document` in order to be able to fake `activeElement`.
-          const fakeDocument = {body: document.body};
+          const fakeDocument = { body: document.body };
 
           [
             'createElement',
@@ -47,7 +47,7 @@ describe('FocusMonitor', () => {
             'addEventListener',
             'removeEventListener'
           ].forEach(method => {
-            (fakeDocument as any)[method] = function() {
+            (fakeDocument as any)[method] = function () {
               return (document as any)[method].apply(document, arguments);
             };
           });
@@ -147,11 +147,31 @@ describe('FocusMonitor', () => {
     expect(changeHandler).toHaveBeenCalledWith('program');
   }));
 
-  it('should detect fake mousedown from a screen reader', fakeAsync(() => {
+  it('should detect fake mousedown from a screen reader on Chrome', fakeAsync(() => {
     // Simulate focus via a fake mousedown from a screen reader.
     dispatchMouseEvent(buttonElement, 'mousedown');
     const event = createMouseEvent('mousedown');
-    Object.defineProperties(event, {offsetX: {get: () => 0}, offsetY: {get: () => 0}});
+    Object.defineProperties(event, { offsetX: { get: () => 0 }, offsetY: { get: () => 0 } });
+    dispatchEvent(buttonElement, event);
+
+    buttonElement.focus();
+    fixture.detectChanges();
+    flush();
+
+    expect(buttonElement.classList.length)
+      .withContext('button should have exactly 2 focus classes').toBe(2);
+    expect(buttonElement.classList.contains('cdk-focused'))
+      .withContext('button should have cdk-focused class').toBe(true);
+    expect(buttonElement.classList.contains('cdk-keyboard-focused'))
+      .withContext('button should have cdk-keyboard-focused class').toBe(true);
+    expect(changeHandler).toHaveBeenCalledWith('keyboard');
+  }));
+
+  it('should detect fake mousedown from a screen reader on Firefox', fakeAsync(() => {
+    // Simulate focus via a fake mousedown from a screen reader.
+    dispatchMouseEvent(buttonElement, 'mousedown');
+    const event = createMouseEvent('mousedown');
+    Object.defineProperties(event, { buttons: { get: () => 0 } });
     dispatchEvent(buttonElement, event);
 
     buttonElement.focus();
@@ -279,7 +299,7 @@ describe('FocusMonitor', () => {
   it('should pass focus options to the native focus method', fakeAsync(() => {
     spyOn(buttonElement, 'focus');
 
-    focusMonitor.focusVia(buttonElement, 'program', {preventScroll: true});
+    focusMonitor.focusVia(buttonElement, 'program', { preventScroll: true });
     fixture.detectChanges();
     flush();
 
@@ -304,14 +324,14 @@ describe('FocusMonitor', () => {
   }));
 
   it('should clear the focus origin after one tick with "immediate" detection',
-     fakeAsync(() => {
-       dispatchKeyboardEvent(document, 'keydown', TAB);
-       tick(2);
-       buttonElement.focus();
+    fakeAsync(() => {
+      dispatchKeyboardEvent(document, 'keydown', TAB);
+      tick(2);
+      buttonElement.focus();
 
-       // After 2 ticks, the timeout has cleared the origin. Default is 'program'.
-       expect(changeHandler).toHaveBeenCalledWith('program');
-     }));
+      // After 2 ticks, the timeout has cleared the origin. Default is 'program'.
+      expect(changeHandler).toHaveBeenCalledWith('program');
+    }));
 
   it('should check children if monitor was called with different checkChildren', fakeAsync(() => {
     const parent = fixture.nativeElement.querySelector('.parent');
@@ -634,7 +654,7 @@ describe('cdkMonitorFocus', () => {
     beforeEach(inject([FocusMonitor], (fm: FocusMonitor) => {
       focusMonitor = fm;
       fixture =
-          TestBed.createComponent(ComplexComponentWithMonitorSubtreeFocusAndMonitorElementFocus);
+        TestBed.createComponent(ComplexComponentWithMonitorSubtreeFocusAndMonitorElementFocus);
       fixture.detectChanges();
 
       parentElement = fixture.debugElement.query(By.css('div'))!.nativeElement;
@@ -645,14 +665,14 @@ describe('cdkMonitorFocus', () => {
     }));
 
     it('should add keyboard focus classes on both elements when child is focused via keyboard',
-        fakeAsync(() => {
-          focusMonitor.focusVia(childElement, 'keyboard');
-          fixture.detectChanges();
-          flush();
+      fakeAsync(() => {
+        focusMonitor.focusVia(childElement, 'keyboard');
+        fixture.detectChanges();
+        flush();
 
-          expect(parentElement.classList).toContain('cdk-keyboard-focused');
-          expect(childElement.classList).toContain('cdk-keyboard-focused');
-        }));
+        expect(parentElement.classList).toContain('cdk-keyboard-focused');
+        expect(childElement.classList).toContain('cdk-keyboard-focused');
+      }));
   });
 
   it('should not throw when trying to monitor focus on a non-element node', () => {
@@ -702,36 +722,36 @@ describe('FocusMonitor observable stream', () => {
 @Component({
   template: `<div class="parent"><button>focus me!</button></div>`
 })
-class PlainButton {}
+class PlainButton { }
 
 
 @Component({
   template: `<button cdkMonitorElementFocus (cdkFocusChange)="focusChanged($event)"></button>`
 })
 class ButtonWithFocusClasses {
-  focusChanged(_origin: FocusOrigin) {}
+  focusChanged(_origin: FocusOrigin) { }
 }
 
 
 @Component({
   template: `<div tabindex="0" cdkMonitorElementFocus><button></button></div>`
 })
-class ComplexComponentWithMonitorElementFocus {}
+class ComplexComponentWithMonitorElementFocus { }
 
 
 @Component({
   template: `<div tabindex="0" cdkMonitorSubtreeFocus><button></button></div>`
 })
-class ComplexComponentWithMonitorSubtreeFocus {}
+class ComplexComponentWithMonitorSubtreeFocus { }
 
 
 @Component({
   template: `<div cdkMonitorSubtreeFocus><button cdkMonitorElementFocus></button></div>`
 })
-class ComplexComponentWithMonitorSubtreeFocusAndMonitorElementFocus {}
+class ComplexComponentWithMonitorSubtreeFocusAndMonitorElementFocus { }
 
 
 @Component({
   template: `<ng-container cdkMonitorElementFocus></ng-container>`
 })
-class FocusMonitorOnCommentNode {}
+class FocusMonitorOnCommentNode { }

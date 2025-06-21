@@ -1,5 +1,5 @@
-import {A, ALT, B, C, CONTROL, MAC_META, META, SHIFT} from '@angular/cdk/keycodes';
-import {Platform} from '@angular/cdk/platform';
+import { A, ALT, B, C, CONTROL, MAC_META, META, SHIFT } from '@angular/cdk/keycodes';
+import { Platform } from '@angular/cdk/platform';
 
 import {
   createMouseEvent,
@@ -9,7 +9,7 @@ import {
   dispatchEvent,
   createTouchEvent,
 } from '../../testing/private';
-import {fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import {
   InputModality,
   InputModalityDetector,
@@ -24,8 +24,8 @@ describe('InputModalityDetector', () => {
   function setupTest(isBrowser = true, options: InputModalityDetectorOptions = {}) {
     TestBed.configureTestingModule({
       providers: [
-        {provide: Platform, useValue: {isBrowser}},
-        {provide: INPUT_MODALITY_DETECTOR_OPTIONS, useValue: options},
+        { provide: Platform, useValue: { isBrowser } },
+        { provide: INPUT_MODALITY_DETECTOR_OPTIONS, useValue: options },
       ]
     });
 
@@ -133,12 +133,23 @@ describe('InputModalityDetector', () => {
     expect(emitted).toEqual(['keyboard', 'mouse', 'touch', 'keyboard']);
   });
 
-  it('should detect fake screen reader mouse events as keyboard input modality', () => {
+  it('should detect fake screen reader mouse events as keyboard input modality on Chrome', () => {
     setupTest();
 
     // Create a fake screen-reader mouse event.
     const event = createMouseEvent('mousedown');
-    Object.defineProperties(event, {offsetX: {get: () => 0}, offsetY: {get: () => 0}});
+    Object.defineProperties(event, { offsetX: { get: () => 0 }, offsetY: { get: () => 0 } });
+    dispatchEvent(document, event);
+
+    expect(detector.mostRecentModality).toBe('keyboard');
+  });
+
+  it('should detect fake screen reader mouse events as keyboard input modality on Firefox', () => {
+    setupTest();
+
+    // Create a fake screen-reader mouse event.
+    const event = createMouseEvent('mousedown');
+    Object.defineProperties(event, { buttons: { get: () => 0 } });
     dispatchEvent(document, event);
 
     expect(detector.mostRecentModality).toBe('keyboard');
@@ -149,7 +160,7 @@ describe('InputModalityDetector', () => {
 
     // Create a fake screen-reader touch event.
     const event = createTouchEvent('touchstart');
-    Object.defineProperty(event, 'touches', {get: () => [{identifier: -1}]});
+    Object.defineProperty(event, 'touches', { get: () => [{ identifier: -1 }] });
     dispatchEvent(document, event);
 
     expect(detector.mostRecentModality).toBe('keyboard');
@@ -168,13 +179,13 @@ describe('InputModalityDetector', () => {
   });
 
   it('should not ignore modifier keys if specified', () => {
-    setupTest(true, {ignoreKeys: []});
+    setupTest(true, { ignoreKeys: [] });
     dispatchKeyboardEvent(document, 'keydown', CONTROL);
     expect(detector.mostRecentModality).toBe('keyboard');
   });
 
   it('should ignore keys if specified', () => {
-    setupTest(true, {ignoreKeys: [A, B, C]});
+    setupTest(true, { ignoreKeys: [A, B, C] });
 
     dispatchKeyboardEvent(document, 'keydown', A);
     dispatchKeyboardEvent(document, 'keydown', B);
