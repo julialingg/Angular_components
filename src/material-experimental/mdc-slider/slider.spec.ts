@@ -6,14 +6,14 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {BidiModule, Directionality} from '@angular/cdk/bidi';
-import {Platform} from '@angular/cdk/platform';
+import { BidiModule, Directionality } from '@angular/cdk/bidi';
+import { Platform } from '@angular/cdk/platform';
 import {
   dispatchMouseEvent,
   dispatchPointerEvent,
   dispatchTouchEvent,
 } from '@angular/cdk/testing/private';
-import {Component, Provider, QueryList, Type, ViewChild, ViewChildren} from '@angular/core';
+import { Component, Provider, QueryList, Type, ViewChild, ViewChildren } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -22,19 +22,19 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {By} from '@angular/platform-browser';
-import {Thumb} from '@material/slider';
-import {of} from 'rxjs';
-import {MatSliderModule} from './module';
-import {MatSlider, MatSliderThumb, MatSliderVisualThumb} from './slider';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { Thumb } from '@material/slider';
+import { of } from 'rxjs';
+import { MatSliderModule } from './module';
+import { MatSlider, MatSliderThumb, MatSliderVisualThumb } from './slider';
 
 interface Point {
   x: number;
   y: number;
 }
 
-describe('MDC-based MatSlider' , () => {
+describe('MDC-based MatSlider', () => {
   let platform: Platform;
 
   beforeAll(() => {
@@ -46,7 +46,7 @@ describe('MDC-based MatSlider' , () => {
   function createComponent<T>(
     component: Type<T>,
     providers: Provider[] = [],
-    ): ComponentFixture<T> {
+  ): ComponentFixture<T> {
     TestBed.configureTestingModule({
       imports: [FormsModule, MatSliderModule, ReactiveFormsModule, BidiModule],
       declarations: [component],
@@ -111,6 +111,7 @@ describe('MDC-based MatSlider' , () => {
   describe('standard range slider', () => {
     let sliderInstance: MatSlider;
     let startInputInstance: MatSliderThumb;
+    let sliderElement: HTMLElement;
     let endInputInstance: MatSliderThumb;
 
     beforeEach(waitForAsync(() => {
@@ -119,6 +120,7 @@ describe('MDC-based MatSlider' , () => {
       const sliderDebugElement = fixture.debugElement.query(By.directive(MatSlider));
       sliderInstance = sliderDebugElement.componentInstance;
       startInputInstance = sliderInstance._getInput(Thumb.START);
+      sliderElement = sliderDebugElement.nativeElement;
       endInputInstance = sliderInstance._getInput(Thumb.END);
     }));
 
@@ -173,6 +175,12 @@ describe('MDC-based MatSlider' , () => {
       sliderInstance._setValue(50, Thumb.START);
       slideToValue(sliderInstance, 25, Thumb.END, platform.IOS);
       expect(startInputInstance.value).toBe(50);
+    });
+
+    it('should have a strong focus indicator in each of the thumbs', () => {
+      const indicators =
+        sliderElement.querySelectorAll('.mat-mdc-slider-visual-thumb .mat-mdc-focus-indicator');
+      expect(indicators.length).toBe(2);
     });
   });
 
@@ -425,7 +433,7 @@ describe('MDC-based MatSlider' , () => {
         expect(inputInstance.value).toBe(25);
         slideToValue(sliderInstance, 75, Thumb.END, platform.IOS);
         expect(inputInstance.value).toBe(75);
-    });
+      });
   });
 
   describe('range slider with set min and max', () => {
@@ -480,7 +488,7 @@ describe('MDC-based MatSlider' , () => {
         expect(startInputInstance.value).toBe(25);
         slideToValue(sliderInstance, 75, Thumb.END, platform.IOS);
         expect(endInputInstance.value).toBe(75);
-    });
+      });
   });
 
   describe('slider with set value', () => {
@@ -844,7 +852,7 @@ describe('MDC-based MatSlider' , () => {
     it('should dispatch events when changing back to previously emitted value after ' +
       'programmatically setting value', () => {
         const dispatchSliderEvent = (type: PointerEventType, value: number) => {
-          const {x, y} = getCoordsForValue(sliderInstance, value);
+          const { x, y } = getCoordsForValue(sliderInstance, value);
           dispatchPointerOrTouchEvent(sliderElement, type, x, y, platform.IOS);
         };
 
@@ -875,7 +883,7 @@ describe('MDC-based MatSlider' , () => {
 
         expect(testComponent.onChange).toHaveBeenCalledTimes(2);
         expect(testComponent.onInput).toHaveBeenCalledTimes(2);
-    });
+      });
   });
 
   describe('range slider with change handlers', () => {
@@ -958,7 +966,7 @@ describe('MDC-based MatSlider' , () => {
     it('should dispatch events when changing back to previously emitted value after ' +
       'programmatically setting the start value', () => {
         const dispatchSliderEvent = (type: PointerEventType, value: number) => {
-          const {x, y} = getCoordsForValue(sliderInstance, value);
+          const { x, y } = getCoordsForValue(sliderInstance, value);
           dispatchPointerOrTouchEvent(sliderElement, type, x, y, platform.IOS);
         };
 
@@ -999,12 +1007,12 @@ describe('MDC-based MatSlider' , () => {
         expect(testComponent.onStartThumbInput).toHaveBeenCalledTimes(2);
         expect(testComponent.onEndThumbChange).not.toHaveBeenCalled();
         expect(testComponent.onEndThumbInput).not.toHaveBeenCalled();
-    });
+      });
 
     it('should dispatch events when changing back to previously emitted value after ' +
       'programmatically setting the end value', () => {
         const dispatchSliderEvent = (type: PointerEventType, value: number) => {
-          const {x, y} = getCoordsForValue(sliderInstance, value);
+          const { x, y } = getCoordsForValue(sliderInstance, value);
           dispatchPointerOrTouchEvent(sliderElement, type, x, y, platform.IOS);
         };
 
@@ -1045,7 +1053,7 @@ describe('MDC-based MatSlider' , () => {
         expect(testComponent.onStartThumbInput).not.toHaveBeenCalled();
         expect(testComponent.onEndThumbChange).toHaveBeenCalledTimes(2);
         expect(testComponent.onEndThumbInput).toHaveBeenCalledTimes(2);
-    });
+      });
   });
 
   describe('slider with input event', () => {
@@ -1066,7 +1074,7 @@ describe('MDC-based MatSlider' , () => {
 
     it('should emit an input event while sliding', () => {
       const dispatchSliderEvent = (type: PointerEventType, value: number) => {
-        const {x, y} = getCoordsForValue(sliderInstance, value);
+        const { x, y } = getCoordsForValue(sliderInstance, value);
         dispatchPointerOrTouchEvent(sliderElement, type, x, y, platform.IOS);
       };
 
@@ -1114,7 +1122,7 @@ describe('MDC-based MatSlider' , () => {
 
     it('should emit an input event while sliding the start thumb', () => {
       const dispatchSliderEvent = (type: PointerEventType, value: number) => {
-        const {x, y} = getCoordsForValue(sliderInstance, value);
+        const { x, y } = getCoordsForValue(sliderInstance, value);
         dispatchPointerOrTouchEvent(sliderElement, type, x, y, platform.IOS);
       };
 
@@ -1141,7 +1149,7 @@ describe('MDC-based MatSlider' , () => {
 
     it('should emit an input event while sliding the end thumb', () => {
       const dispatchSliderEvent = (type: PointerEventType, value: number) => {
-        const {x, y} = getCoordsForValue(sliderInstance, value);
+        const { x, y } = getCoordsForValue(sliderInstance, value);
         dispatchPointerOrTouchEvent(sliderElement, type, x, y, platform.IOS);
       };
 
@@ -1202,7 +1210,7 @@ describe('MDC-based MatSlider' , () => {
     beforeEach(waitForAsync(() => {
       const fixture = createComponent(StandardSlider, [{
         provide: Directionality,
-        useValue: ({value: 'rtl', change: of()})
+        useValue: ({ value: 'rtl', change: of() })
       }]);
       fixture.detectChanges();
       const sliderDebugElement = fixture.debugElement.query(By.directive(MatSlider));
@@ -1224,7 +1232,7 @@ describe('MDC-based MatSlider' , () => {
     beforeEach(waitForAsync(() => {
       const fixture = createComponent(StandardRangeSlider, [{
         provide: Directionality,
-        useValue: ({value: 'rtl', change: of()})
+        useValue: ({ value: 'rtl', change: of() })
       }]);
       fixture.detectChanges();
       const sliderDebugElement = fixture.debugElement.query(By.directive(MatSlider));
@@ -1341,7 +1349,7 @@ describe('MDC-based MatSlider' , () => {
         fixture.detectChanges();
         flush();
         expect(startInputInstance.value).toBe(0);
-    }));
+      }));
 
     it('should be able to reset a slider by setting the end thumb model back to undefined',
       fakeAsync(() => {
@@ -1355,7 +1363,7 @@ describe('MDC-based MatSlider' , () => {
         fixture.detectChanges();
         flush();
         expect(endInputInstance.value).toBe(0);
-    }));
+      }));
   });
 
   describe('slider as a custom form control', () => {
@@ -1653,7 +1661,7 @@ const SLIDER_STYLES = ['.mat-mdc-slider { width: 300px; }'];
   `,
   styles: SLIDER_STYLES,
 })
-class StandardSlider {}
+class StandardSlider { }
 
 @Component({
   template: `
@@ -1664,7 +1672,7 @@ class StandardSlider {}
   `,
   styles: SLIDER_STYLES,
 })
-class StandardRangeSlider {}
+class StandardRangeSlider { }
 
 @Component({
   template: `
@@ -1674,7 +1682,7 @@ class StandardRangeSlider {}
   `,
   styles: SLIDER_STYLES,
 })
-class DisabledSlider {}
+class DisabledSlider { }
 
 @Component({
   template: `
@@ -1685,7 +1693,7 @@ class DisabledSlider {}
   `,
   styles: SLIDER_STYLES,
 })
-class DisabledRangeSlider {}
+class DisabledRangeSlider { }
 
 @Component({
   template: `
@@ -1695,7 +1703,7 @@ class DisabledRangeSlider {}
   `,
   styles: SLIDER_STYLES,
 })
-class SliderWithMinAndMax {}
+class SliderWithMinAndMax { }
 
 @Component({
   template: `
@@ -1706,7 +1714,7 @@ class SliderWithMinAndMax {}
   `,
   styles: SLIDER_STYLES,
 })
-class RangeSliderWithMinAndMax {}
+class RangeSliderWithMinAndMax { }
 
 @Component({
   template: `
@@ -1716,7 +1724,7 @@ class RangeSliderWithMinAndMax {}
   `,
   styles: SLIDER_STYLES,
 })
-class SliderWithValue {}
+class SliderWithValue { }
 
 @Component({
   template: `
@@ -1727,7 +1735,7 @@ class SliderWithValue {}
   `,
   styles: SLIDER_STYLES,
 })
-class RangeSliderWithValue {}
+class RangeSliderWithValue { }
 
 @Component({
   template: `
@@ -1737,7 +1745,7 @@ class RangeSliderWithValue {}
   `,
   styles: SLIDER_STYLES,
 })
-class SliderWithStep {}
+class SliderWithStep { }
 
 @Component({
   template: `
@@ -1748,7 +1756,7 @@ class SliderWithStep {}
   `,
   styles: SLIDER_STYLES,
 })
-class RangeSliderWithStep {}
+class RangeSliderWithStep { }
 
 @Component({
   template: `
@@ -1943,7 +1951,7 @@ const enum TouchEventType {
 /** Clicks on the MatSlider at the coordinates corresponding to the given value. */
 function setValueByClick(slider: MatSlider, value: number, isIOS: boolean) {
   const sliderElement = slider._elementRef.nativeElement;
-  const {x, y} = getCoordsForValue(slider, value);
+  const { x, y } = getCoordsForValue(slider, value);
 
   dispatchPointerEvent(sliderElement, 'mouseenter', x, y);
   dispatchPointerOrTouchEvent(sliderElement, PointerEventType.POINTER_DOWN, x, y, isIOS);
@@ -1953,8 +1961,8 @@ function setValueByClick(slider: MatSlider, value: number, isIOS: boolean) {
 /** Slides the MatSlider's thumb to the given value. */
 function slideToValue(slider: MatSlider, value: number, thumbPosition: Thumb, isIOS: boolean) {
   const sliderElement = slider._elementRef.nativeElement;
-  const {x: startX, y: startY} = getCoordsForValue(slider, slider._getInput(thumbPosition).value);
-  const {x: endX, y: endY} = getCoordsForValue(slider, value);
+  const { x: startX, y: startY } = getCoordsForValue(slider, slider._getInput(thumbPosition).value);
+  const { x: endX, y: endY } = getCoordsForValue(slider, value);
 
   dispatchPointerEvent(sliderElement, 'mouseenter', startX, startY);
   dispatchPointerOrTouchEvent(sliderElement, PointerEventType.POINTER_DOWN, startX, startY, isIOS);
@@ -1964,24 +1972,24 @@ function slideToValue(slider: MatSlider, value: number, thumbPosition: Thumb, is
 
 /** Returns the x and y coordinates for the given slider value. */
 function getCoordsForValue(slider: MatSlider, value: number): Point {
-  const {min, max} = slider;
+  const { min, max } = slider;
   const percent = (value - min) / (max - min);
 
-  const {top, left, width, height} = slider._elementRef.nativeElement.getBoundingClientRect();
+  const { top, left, width, height } = slider._elementRef.nativeElement.getBoundingClientRect();
   const x = left + (width * percent);
   const y = top + (height / 2);
 
-  return {x, y};
+  return { x, y };
 }
 
 /** Dispatch a pointerdown or pointerup event if supported, otherwise dispatch the touch event. */
 function dispatchPointerOrTouchEvent(
   node: Node, type: PointerEventType, x: number, y: number, isIOS: boolean) {
-    if (isIOS) {
-      dispatchTouchEvent(node, pointerEventTypeToTouchEventType(type), x, y, x, y);
-    } else {
-      dispatchPointerEvent(node, type, x, y);
-    }
+  if (isIOS) {
+    dispatchTouchEvent(node, pointerEventTypeToTouchEventType(type), x, y, x, y);
+  } else {
+    dispatchPointerEvent(node, type, x, y);
+  }
 }
 
 /** Returns the touch event equivalent of the given pointer event. */
