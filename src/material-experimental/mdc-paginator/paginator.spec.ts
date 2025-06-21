@@ -1,12 +1,12 @@
-import {ComponentFixture, TestBed, tick, fakeAsync} from '@angular/core/testing';
-import {Component, ViewChild, Type, Provider} from '@angular/core';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {dispatchMouseEvent} from '@angular/cdk/testing/private';
-import {ThemePalette} from '@angular/material/core';
-import {MatSelect} from '@angular/material-experimental/mdc-select';
-import {By} from '@angular/platform-browser';
-import {MatPaginatorModule, MatPaginator, MatPaginatorIntl} from './index';
-import {MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorDefaultOptions} from './paginator';
+import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { Component, ViewChild, Type, Provider } from '@angular/core';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { dispatchMouseEvent } from '@angular/cdk/testing/private';
+import { ThemePalette } from '@angular/material/core';
+import { MatSelect } from '@angular/material-experimental/mdc-select';
+import { By } from '@angular/platform-browser';
+import { MatPaginatorModule, MatPaginator, MatPaginatorIntl } from './index';
+import { MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorDefaultOptions } from './paginator';
 
 
 describe('MDC-based MatPaginator', () => {
@@ -73,11 +73,16 @@ describe('MDC-based MatPaginator', () => {
 
     it('should show right aria-labels for select and buttons', () => {
       const fixture = createComponent(MatPaginatorApp);
-      const select = fixture.nativeElement.querySelector('.mat-mdc-select');
-      expect(select.getAttribute('aria-label')).toBe('Items per page:');
 
       expect(getPreviousButton(fixture).getAttribute('aria-label')).toBe('Previous page');
       expect(getNextButton(fixture).getAttribute('aria-label')).toBe('Next page');
+
+      const select = fixture.nativeElement.querySelector('.mat-mdc-select');
+      const selectLabelIds = select.getAttribute('aria-labelledby')?.split(/\s/g) as string[];
+      const selectLabelTexts = selectLabelIds?.map(labelId => {
+        return fixture.nativeElement.querySelector(`#${labelId}`)?.textContent?.trim();
+      });
+      expect(selectLabelTexts).toContain('Items per page:');
     });
 
     it('should re-render when the i18n labels change', () => {
@@ -130,19 +135,19 @@ describe('MDC-based MatPaginator', () => {
   it('should be able to show the first/last buttons', () => {
     const fixture = createComponent(MatPaginatorApp);
     expect(getFirstButton(fixture))
-        .toBeNull('Expected first button to not exist.');
+      .toBeNull('Expected first button to not exist.');
 
     expect(getLastButton(fixture))
-        .toBeNull('Expected last button to not exist.');
+      .toBeNull('Expected last button to not exist.');
 
     fixture.componentInstance.showFirstLastButtons = true;
     fixture.detectChanges();
 
     expect(getFirstButton(fixture))
-        .toBeTruthy('Expected first button to be rendered.');
+      .toBeTruthy('Expected first button to be rendered.');
 
     expect(getLastButton(fixture))
-        .toBeTruthy('Expected last button to be rendered.');
+      .toBeTruthy('Expected last button to be rendered.');
   });
 
   it('should mark itself as initialized', fakeAsync(() => {
@@ -414,19 +419,19 @@ describe('MDC-based MatPaginator', () => {
     const element = fixture.nativeElement;
 
     expect(element.querySelector('.mat-mdc-paginator-page-size'))
-        .toBeTruthy('Expected select to be rendered.');
+      .toBeTruthy('Expected select to be rendered.');
 
     fixture.componentInstance.hidePageSize = true;
     fixture.detectChanges();
 
     expect(element.querySelector('.mat-mdc-paginator-page-size'))
-        .toBeNull('Expected select to be removed.');
+      .toBeNull('Expected select to be removed.');
   });
 
   it('should be able to disable all the controls in the paginator via the binding', () => {
     const fixture = createComponent(MatPaginatorApp);
     const select: MatSelect =
-        fixture.debugElement.query(By.directive(MatSelect))!.componentInstance;
+      fixture.debugElement.query(By.directive(MatSelect))!.componentInstance;
 
     fixture.componentInstance.pageIndex = 1;
     fixture.componentInstance.showFirstLastButtons = true;
@@ -558,7 +563,7 @@ class MatPaginatorWithoutOptionsApp {
                    length="100">
     </mat-paginator>
   `
-  })
+})
 class MatPaginatorWithStringValues {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 }
