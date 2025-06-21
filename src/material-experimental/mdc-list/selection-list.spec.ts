@@ -1,4 +1,4 @@
-import {A, D, DOWN_ARROW, END, ENTER, HOME, SPACE, UP_ARROW} from '@angular/cdk/keycodes';
+import { A, D, DOWN_ARROW, END, ENTER, HOME, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   createKeyboardEvent,
   dispatchEvent,
@@ -21,10 +21,10 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-import {FormControl, FormsModule, NgModel, ReactiveFormsModule} from '@angular/forms';
-import {defaultRippleAnimationConfig, ThemePalette} from '@angular/material-experimental/mdc-core';
-import {By} from '@angular/platform-browser';
-import {numbers} from '@material/list';
+import { FormControl, FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
+import { defaultRippleAnimationConfig, ThemePalette } from '@angular/material-experimental/mdc-core';
+import { By } from '@angular/platform-browser';
+import { numbers } from '@material/list';
 import {
   MatListModule,
   MatListOption,
@@ -523,7 +523,7 @@ describe('MDC-based MatSelectionList without forms', () => {
       fakeAsync(() => {
         const rippleTarget = fixture.nativeElement
           .querySelector('.mat-mdc-list-option:not(.mdc-list-item--disabled)');
-        const {enterDuration, exitDuration} = defaultRippleAnimationConfig;
+        const { enterDuration, exitDuration } = defaultRippleAnimationConfig;
 
         dispatchMouseEvent(rippleTarget, 'mousedown');
         dispatchMouseEvent(rippleTarget, 'mouseup');
@@ -570,6 +570,13 @@ describe('MDC-based MatSelectionList without forms', () => {
         .every(element => element.querySelector('.mat-mdc-focus-indicator') !== null)).toBe(true);
     });
 
+    it('should hide the internal SVG', () => {
+      listOptions.forEach(option => {
+        const svg = option.nativeElement.querySelector('.mdc-checkbox svg');
+        expect(svg.getAttribute('aria-hidden')).toBe('true');
+      });
+    });
+
   });
 
   describe('with list option selected', () => {
@@ -595,7 +602,7 @@ describe('MDC-based MatSelectionList without forms', () => {
 
     it('should set its initial selected state in the selectedOptions', () => {
       let options = listOptionElements.map(optionEl =>
-          optionEl.injector.get<MatListOption>(MatListOption));
+        optionEl.injector.get<MatListOption>(MatListOption));
       let selectedOptions = selectionList.componentInstance.selectedOptions;
       expect(selectedOptions.isSelected(options[0])).toBeFalse();
       expect(selectedOptions.isSelected(options[1])).toBeTrue();
@@ -604,12 +611,12 @@ describe('MDC-based MatSelectionList without forms', () => {
     });
 
     it('should focus the first selected option on first focus if an item is pre-selected',
-        fakeAsync(() => {
-      // MDC manages the focus through setting a `tabindex` on the designated list item. We
-      // assert that the proper tabindex is set on the pre-selected option at index 1, and
-      // ensure that other options are not reachable through tab.
-      expect(listOptionElements.map(el => el.nativeElement.tabIndex)).toEqual([-1, 0, -1, -1]);
-    }));
+      fakeAsync(() => {
+        // MDC manages the focus through setting a `tabindex` on the designated list item. We
+        // assert that the proper tabindex is set on the pre-selected option at index 1, and
+        // ensure that other options are not reachable through tab.
+        expect(listOptionElements.map(el => el.nativeElement.tabIndex)).toEqual([-1, 0, -1, -1]);
+      }));
   });
 
   describe('with option disabled', () => {
@@ -755,11 +762,11 @@ describe('MDC-based MatSelectionList without forms', () => {
     }));
 
     function expectCheckboxAtPosition(listItemElement: HTMLElement,
-                              position: MatListOptionCheckboxPosition) {
+      position: MatListOptionCheckboxPosition) {
       const containerSelector = position === 'before' ?
-          '.mdc-list-item__start' : 'mdc-list-item__end';
+        '.mdc-list-item__start' : 'mdc-list-item__end';
       const checkboxPositionClass = position === 'before' ?
-          'mdc-list-item--with-leading-checkbox' : 'mdc-list-item--with-trailing-checkbox';
+        'mdc-list-item--with-leading-checkbox' : 'mdc-list-item--with-trailing-checkbox';
       expect(listItemElement.querySelector(`${containerSelector} .mdc-checkbox`))
         .withContext(`Expected checkbox to be aligned ${position}`)
         .toBeDefined();
@@ -770,7 +777,7 @@ describe('MDC-based MatSelectionList without forms', () => {
      * Expects an icon to be shown at the given position. Also
      * ensures no avatar is shown at the specified position.
      */
-    function expectIconAt(item: HTMLElement, position: 'before'|'after') {
+    function expectIconAt(item: HTMLElement, position: 'before' | 'after') {
       const icon = item.querySelector('.mat-mdc-list-icon')!;
 
       expect(item.classList).not.toContain('mdc-list-item--with-leading-avatar');
@@ -791,7 +798,7 @@ describe('MDC-based MatSelectionList without forms', () => {
      * Expects an avatar to be shown at the given position. Also
      * ensures that no icon is shown at the specified position.
      */
-    function expectAvatarAt(item: HTMLElement, position: 'before'|'after') {
+    function expectAvatarAt(item: HTMLElement, position: 'before' | 'after') {
       const avatar = item.querySelector('.mat-mdc-list-avatar')!;
 
       expect(item.classList).not.toContain('mdc-list-item--with-leading-icon');
@@ -848,7 +855,7 @@ describe('MDC-based MatSelectionList without forms', () => {
       const fixture = TestBed.createComponent(SelectionListWithAvatar);
       fixture.detectChanges();
       const listOption = fixture.nativeElement
-          .querySelector('.mat-mdc-list-option')! as HTMLElement;
+        .querySelector('.mat-mdc-list-option')! as HTMLElement;
 
       expectCheckboxAtPosition(listOption, 'after');
       expectAvatarAt(listOption, 'before');
@@ -943,7 +950,7 @@ describe('MDC-based MatSelectionList without forms', () => {
     });
 
     it('should do nothing when pressing ctrl + a', () => {
-      const event = createKeyboardEvent('keydown', A, undefined, {control: true});
+      const event = createKeyboardEvent('keydown', A, undefined, { control: true });
 
       expect(listOptions.every(option => !option.componentInstance.selected)).toBe(true);
 
@@ -954,36 +961,36 @@ describe('MDC-based MatSelectionList without forms', () => {
     });
 
     it('should focus, but not toggle, the next item when pressing SHIFT + UP_ARROW in single ' +
-        'selection mode', () => {
-      listOptions[3].nativeElement.focus();
-      expect(getFocusIndex()).toBe(3);
+      'selection mode', () => {
+        listOptions[3].nativeElement.focus();
+        expect(getFocusIndex()).toBe(3);
 
-      expect(listOptions[1].componentInstance.selected).toBe(false);
-      expect(listOptions[2].componentInstance.selected).toBe(false);
+        expect(listOptions[1].componentInstance.selected).toBe(false);
+        expect(listOptions[2].componentInstance.selected).toBe(false);
 
-      dispatchKeyboardEvent(listOptions[3].nativeElement, 'keydown', UP_ARROW,
-          undefined, {shift: true});
-      fixture.detectChanges();
+        dispatchKeyboardEvent(listOptions[3].nativeElement, 'keydown', UP_ARROW,
+          undefined, { shift: true });
+        fixture.detectChanges();
 
-      expect(listOptions[1].componentInstance.selected).toBe(false);
-      expect(listOptions[2].componentInstance.selected).toBe(false);
-    });
+        expect(listOptions[1].componentInstance.selected).toBe(false);
+        expect(listOptions[2].componentInstance.selected).toBe(false);
+      });
 
     it('should focus, but not toggle, the next item when pressing SHIFT + DOWN_ARROW ' +
-        'in single selection mode', () => {
-      listOptions[3].nativeElement.focus();
-      expect(getFocusIndex()).toBe(3);
+      'in single selection mode', () => {
+        listOptions[3].nativeElement.focus();
+        expect(getFocusIndex()).toBe(3);
 
-      expect(listOptions[1].componentInstance.selected).toBe(false);
-      expect(listOptions[2].componentInstance.selected).toBe(false);
+        expect(listOptions[1].componentInstance.selected).toBe(false);
+        expect(listOptions[2].componentInstance.selected).toBe(false);
 
-      dispatchKeyboardEvent(listOptions[3].nativeElement, 'keydown', DOWN_ARROW,
-        undefined, {shift: true});
-      fixture.detectChanges();
+        dispatchKeyboardEvent(listOptions[3].nativeElement, 'keydown', DOWN_ARROW,
+          undefined, { shift: true });
+        fixture.detectChanges();
 
-      expect(listOptions[1].componentInstance.selected).toBe(false);
-      expect(listOptions[2].componentInstance.selected).toBe(false);
-    });
+        expect(listOptions[1].componentInstance.selected).toBe(false);
+        expect(listOptions[2].componentInstance.selected).toBe(false);
+      });
 
   });
 
@@ -1408,7 +1415,7 @@ describe('MDC-based MatSelectionList with forms', () => {
 
       const option = fixture.debugElement.queryAll(By.directive(MatListOption))[1];
       const checkbox = option.nativeElement
-          .querySelector('.mdc-checkbox__native-control') as HTMLInputElement;
+        .querySelector('.mdc-checkbox__native-control') as HTMLInputElement;
 
       fixture.detectChanges();
       flush();
@@ -1429,7 +1436,7 @@ describe('MDC-based MatSelectionList with forms', () => {
         return o1 && o2 && o1.id === o2.id;
       }).and.callThrough();
 
-      testComponent.selectedOptions = [{id: 2, label: 'Two'}];
+      testComponent.selectedOptions = [{ id: 2, label: 'Two' }];
       fixture.detectChanges();
       tick();
 
@@ -1440,7 +1447,8 @@ describe('MDC-based MatSelectionList with forms', () => {
 });
 
 
-@Component({template: `
+@Component({
+  template: `
   <mat-selection-list
     id="selection-list-1"
     (selectionChange)="onSelectionChange($event)"
@@ -1472,10 +1480,11 @@ class SelectionListWithListOptions {
   selectionListColor: ThemePalette;
   firstOptionColor: ThemePalette;
 
-  onSelectionChange(_change: MatSelectionListChange) {}
+  onSelectionChange(_change: MatSelectionListChange) { }
 }
 
-@Component({template: `
+@Component({
+  template: `
   <mat-selection-list id="selection-list-2">
     <mat-list-option checkboxPosition="after">
       Inbox (disabled selection-option)
@@ -1493,7 +1502,8 @@ class SelectionListWithListOptions {
 class SelectionListWithCheckboxPositionAfter {
 }
 
-@Component({template: `
+@Component({
+  template: `
   <mat-selection-list id="selection-list-3" [disabled]="disabled">
     <mat-list-option checkboxPosition="after">
       Inbox (disabled selection-option)
@@ -1512,7 +1522,8 @@ class SelectionListWithListDisabled {
   disabled: boolean = true;
 }
 
-@Component({template: `
+@Component({
+  template: `
   <mat-selection-list>
     <mat-list-option [disabled]="disableItem">Item</mat-list-option>
   </mat-selection-list>
@@ -1521,7 +1532,8 @@ class SelectionListWithDisabledOption {
   disableItem: boolean = false;
 }
 
-@Component({template: `
+@Component({
+  template: `
   <mat-selection-list>
     <mat-list-option>Not selected - Item #1</mat-list-option>
     <mat-list-option [selected]="true">Pre-selected - Item #2</mat-list-option>
@@ -1541,7 +1553,8 @@ class SelectionListWithSelectedOptionAndValue {
   itemValue = 'item1';
 }
 
-@Component({template: `
+@Component({
+  template: `
   <mat-selection-list id="selection-list-4">
     <mat-list-option checkboxPosition="after" class="test-focus" id="123">
       Inbox
@@ -1631,12 +1644,12 @@ class SelectionListWithPreselectedFormControlOnPush {
 })
 class SelectionListWithCustomComparator {
   @ViewChildren(MatListOption) optionInstances: QueryList<MatListOption>;
-  selectedOptions: {id: number, label: string}[] = [];
+  selectedOptions: { id: number, label: string }[] = [];
   compareWith?: (o1: any, o2: any) => boolean;
   options = [
-    {id: 1, label: 'One'},
-    {id: 2, label: 'Two'},
-    {id: 3, label: 'Three'}
+    { id: 1, label: 'One' },
+    { id: 2, label: 'Two' },
+    { id: 3, label: 'Three' }
   ];
 }
 
@@ -1652,7 +1665,7 @@ class SelectionListWithCustomComparator {
   `
 })
 class SelectionListWithAvatar {
-  checkboxPosition: MatListOptionCheckboxPosition|undefined;
+  checkboxPosition: MatListOptionCheckboxPosition | undefined;
 }
 
 @Component({
@@ -1666,7 +1679,7 @@ class SelectionListWithAvatar {
   `
 })
 class SelectionListWithIcon {
-  checkboxPosition: MatListOptionCheckboxPosition|undefined;
+  checkboxPosition: MatListOptionCheckboxPosition | undefined;
 }
 
 
@@ -1700,7 +1713,8 @@ class SelectionListWithIndirectDescendantLines {
 }
 
 
-@Component({template: `
+@Component({
+  template: `
   <mat-selection-list>
     <mat-list-option [(selected)]="selected">Item</mat-list-option>
   </mat-selection-list>
