@@ -1,6 +1,6 @@
-import {TestBed, ComponentFixture, fakeAsync, tick, inject} from '@angular/core/testing';
-import {Component, ViewChild} from '@angular/core';
-import {Platform} from '@angular/cdk/platform';
+import { TestBed, ComponentFixture, fakeAsync, tick, inject } from '@angular/core/testing';
+import { Component, ViewChild } from '@angular/core';
+import { Platform } from '@angular/cdk/platform';
 import {
   dispatchEvent,
   createTouchEvent,
@@ -8,15 +8,15 @@ import {
   dispatchTouchEvent,
   createMouseEvent,
 } from '@angular/cdk/testing/private';
-import {defaultRippleAnimationConfig} from './ripple-renderer';
+import { defaultRippleAnimationConfig } from './ripple-renderer';
 import {
   MatRipple, MatRippleModule, MAT_RIPPLE_GLOBAL_OPTIONS, RippleState, RippleGlobalOptions,
   RippleAnimationConfig
 } from './index';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 /** Shorthands for the enter and exit duration of ripples. */
-const {enterDuration, exitDuration} = defaultRippleAnimationConfig;
+const { enterDuration, exitDuration } = defaultRippleAnimationConfig;
 
 describe('MatRipple', () => {
   let fixture: ComponentFixture<any>;
@@ -145,9 +145,9 @@ describe('MatRipple', () => {
       Object.defineProperties(touchEvent, {
         changedTouches: {
           value: [
-            {pageX: 0, pageY: 0},
-            {pageX: 10, pageY: 10},
-            {pageX: 20, pageY: 20}
+            { pageX: 0, pageY: 0 },
+            { pageX: 10, pageY: 10 },
+            { pageX: 20, pageY: 20 }
           ]
         }
       });
@@ -181,7 +181,7 @@ describe('MatRipple', () => {
 
     it('should ignore fake mouse events from screen readers', fakeAsync(() => {
       const event = createMouseEvent('mousedown');
-      Object.defineProperty(event, 'buttons', {get: () => 0});
+      Object.defineProperties(event, { offsetX: { get: () => 0 }, offsetY: { get: () => 0 } });
 
       dispatchEvent(rippleTarget, event);
       tick(enterDuration);
@@ -254,9 +254,9 @@ describe('MatRipple', () => {
 
       expect(rippleElement).toBeTruthy();
       expect(parseFloat(rippleElement.style.left as string))
-          .toBeCloseTo(TARGET_WIDTH / 2 - radius, 1);
+        .toBeCloseTo(TARGET_WIDTH / 2 - radius, 1);
       expect(parseFloat(rippleElement.style.top as string))
-          .toBeCloseTo(TARGET_HEIGHT / 2 - radius, 1);
+        .toBeCloseTo(TARGET_HEIGHT / 2 - radius, 1);
     });
 
     it('cleans up the event handlers when the container gets destroyed', () => {
@@ -402,7 +402,7 @@ describe('MatRipple', () => {
       expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
     }));
 
-   it('should remove ripples that are not done fading-in', fakeAsync(() => {
+    it('should remove ripples that are not done fading-in', fakeAsync(() => {
       expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
 
       rippleDirective.launch(0, 0);
@@ -419,76 +419,76 @@ describe('MatRipple', () => {
         .toBe(0, 'Expected no ripples to be active after calling fadeOutAll.');
     }));
 
-   it('should properly set ripple states', fakeAsync(() => {
-     expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
+    it('should properly set ripple states', fakeAsync(() => {
+      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
 
-     let rippleRef = rippleDirective.launch(0, 0, { persistent: true });
+      let rippleRef = rippleDirective.launch(0, 0, { persistent: true });
 
-     expect(rippleRef.state).toBe(RippleState.FADING_IN);
-     expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
+      expect(rippleRef.state).toBe(RippleState.FADING_IN);
+      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
 
-     tick(enterDuration);
+      tick(enterDuration);
 
-     expect(rippleRef.state).toBe(RippleState.VISIBLE);
-     expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
+      expect(rippleRef.state).toBe(RippleState.VISIBLE);
+      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
 
-     rippleRef.fadeOut();
+      rippleRef.fadeOut();
 
-     expect(rippleRef.state).toBe(RippleState.FADING_OUT);
-     expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
+      expect(rippleRef.state).toBe(RippleState.FADING_OUT);
+      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
 
-     tick(exitDuration);
+      tick(exitDuration);
 
-     expect(rippleRef.state).toBe(RippleState.HIDDEN);
-     expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
-   }));
+      expect(rippleRef.state).toBe(RippleState.HIDDEN);
+      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
+    }));
 
-   it('should allow setting a specific animation config for a ripple', fakeAsync(() => {
-     expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
+    it('should allow setting a specific animation config for a ripple', fakeAsync(() => {
+      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
 
-     rippleDirective.launch(0, 0, {
-       animation: {enterDuration: 120, exitDuration: 0}
-     });
+      rippleDirective.launch(0, 0, {
+        animation: { enterDuration: 120, exitDuration: 0 }
+      });
 
-     expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
+      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
 
-     tick(120);
+      tick(120);
 
-     expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
-   }));
+      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
+    }));
 
-   it('should allow passing only a configuration', fakeAsync(() => {
-     expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
+    it('should allow passing only a configuration', fakeAsync(() => {
+      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
 
-     const rippleRef = rippleDirective.launch({persistent: true});
+      const rippleRef = rippleDirective.launch({ persistent: true });
 
-     expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
+      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
 
-     tick(enterDuration + exitDuration);
+      tick(enterDuration + exitDuration);
 
-     expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
+      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
 
-     rippleRef.fadeOut();
+      rippleRef.fadeOut();
 
-     tick(exitDuration);
+      tick(exitDuration);
 
-     expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
-   }));
+      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(0);
+    }));
   });
 
   describe('global ripple options', () => {
     let rippleDirective: MatRipple;
 
     function createTestComponent(rippleConfig: RippleGlobalOptions,
-                                 testComponent: any = BasicRippleContainer,
-                                 extraImports: any[] = []) {
+      testComponent: any = BasicRippleContainer,
+      extraImports: any[] = []) {
       // Reset the previously configured testing module to be able set new providers.
       // The testing module has been initialized in the root describe group for the ripples.
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         imports: [MatRippleModule, ...extraImports],
         declarations: [testComponent],
-        providers: [{provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: rippleConfig}]
+        providers: [{ provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: rippleConfig }]
       });
 
       fixture = TestBed.createComponent(testComponent);
@@ -538,7 +538,7 @@ describe('MatRipple', () => {
 
     it('should support changing the animation duration', fakeAsync(() => {
       createTestComponent({
-        animation: {enterDuration: 100, exitDuration: 100}
+        animation: { enterDuration: 100, exitDuration: 100 }
       });
 
       rippleDirective.launch(0, 0);
@@ -647,22 +647,22 @@ describe('MatRipple', () => {
     });
 
     it('fades out non-persistent ripples when disabled input is set',
-       fakeAsync(() => {
-      dispatchMouseEvent(rippleTarget, 'mousedown');
-      controller.ripple.launch(0, 0, { persistent: true });
+      fakeAsync(() => {
+        dispatchMouseEvent(rippleTarget, 'mousedown');
+        controller.ripple.launch(0, 0, { persistent: true });
 
-      tick(enterDuration);
-      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(2);
+        tick(enterDuration);
+        expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(2);
 
-      spyOn(controller.ripple, 'fadeOutAllNonPersistent').and.callThrough();
-      controller.disabled = true;
-      fixture.detectChanges();
+        spyOn(controller.ripple, 'fadeOutAllNonPersistent').and.callThrough();
+        controller.disabled = true;
+        fixture.detectChanges();
 
-      expect(controller.ripple.fadeOutAllNonPersistent).toHaveBeenCalled();
+        expect(controller.ripple.fadeOutAllNonPersistent).toHaveBeenCalled();
 
-      tick(exitDuration);
-      expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
-    }));
+        tick(exitDuration);
+        expect(rippleTarget.querySelectorAll('.mat-ripple-element').length).toBe(1);
+      }));
 
     it('allows specifying custom trigger element', () => {
       let alternateTrigger = fixture.debugElement.nativeElement
@@ -732,7 +732,7 @@ describe('MatRipple', () => {
     });
 
     it('should be able to specify animation config through binding', fakeAsync(() => {
-      controller.animationConfig = {enterDuration: 150, exitDuration: 150};
+      controller.animationConfig = { enterDuration: 150, exitDuration: 150 };
       fixture.detectChanges();
 
       dispatchMouseEvent(rippleTarget, 'mousedown');
@@ -786,9 +786,10 @@ class RippleContainerWithInputBindings {
 @Component({
   template: `<div id="container" #ripple="matRipple" matRipple></div>`,
 })
-class RippleContainerWithoutBindings {}
+class RippleContainerWithoutBindings { }
 
-@Component({ template: `<div id="container" matRipple
+@Component({
+  template: `<div id="container" matRipple
                              *ngIf="!isDestroyed"></div>` })
 class RippleContainerWithNgIf {
   @ViewChild(MatRipple) ripple: MatRipple;

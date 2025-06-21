@@ -1,6 +1,6 @@
-import {A, ALT, B, C, CONTROL, MAC_META, META, SHIFT} from '@angular/cdk/keycodes';
-import {Platform} from '@angular/cdk/platform';
-import {NgZone, PLATFORM_ID} from '@angular/core';
+import { A, ALT, B, C, CONTROL, MAC_META, META, SHIFT } from '@angular/cdk/keycodes';
+import { Platform } from '@angular/cdk/platform';
+import { NgZone, PLATFORM_ID } from '@angular/core';
 
 import {
   createMouseEvent,
@@ -10,8 +10,8 @@ import {
   dispatchEvent,
   createTouchEvent,
 } from '@angular/cdk/testing/private';
-import {fakeAsync, inject, tick} from '@angular/core/testing';
-import {InputModality, InputModalityDetector, TOUCH_BUFFER_MS} from './input-modality-detector';
+import { fakeAsync, inject, tick } from '@angular/core/testing';
+import { InputModality, InputModalityDetector, TOUCH_BUFFER_MS } from './input-modality-detector';
 
 describe('InputModalityDetector', () => {
   let platform: Platform;
@@ -134,7 +134,7 @@ describe('InputModalityDetector', () => {
 
     // Create a fake screen-reader mouse event.
     const event = createMouseEvent('mousedown');
-    Object.defineProperty(event, 'buttons', {get: () => 0});
+    Object.defineProperties(event, { offsetX: { get: () => 0 }, offsetY: { get: () => 0 } });
     dispatchEvent(document, event);
 
     expect(detector.mostRecentModality).toBe('keyboard');
@@ -145,7 +145,7 @@ describe('InputModalityDetector', () => {
 
     // Create a fake screen-reader touch event.
     const event = createTouchEvent('touchstart');
-    Object.defineProperty(event, 'touches', {get: () => [{identifier: -1}]});
+    Object.defineProperty(event, 'touches', { get: () => [{ identifier: -1 }] });
     dispatchEvent(document, event);
 
     expect(detector.mostRecentModality).toBe('keyboard');
@@ -164,13 +164,13 @@ describe('InputModalityDetector', () => {
   });
 
   it('should not ignore modifier keys if specified', () => {
-    detector = new InputModalityDetector(platform, ngZone, document, {ignoreKeys: []});
+    detector = new InputModalityDetector(platform, ngZone, document, { ignoreKeys: [] });
     dispatchKeyboardEvent(document, 'keydown', CONTROL);
     expect(detector.mostRecentModality).toBe('keyboard');
   });
 
   it('should ignore keys if specified', () => {
-    detector = new InputModalityDetector(platform, ngZone, document, {ignoreKeys: [A, B, C]});
+    detector = new InputModalityDetector(platform, ngZone, document, { ignoreKeys: [A, B, C] });
 
     dispatchKeyboardEvent(document, 'keydown', A);
     dispatchKeyboardEvent(document, 'keydown', B);
