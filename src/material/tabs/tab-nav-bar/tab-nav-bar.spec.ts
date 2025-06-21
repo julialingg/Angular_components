@@ -1,11 +1,11 @@
-import {waitForAsync, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
-import {Component, ViewChild, ViewChildren, QueryList} from '@angular/core';
-import {MAT_RIPPLE_GLOBAL_OPTIONS, RippleGlobalOptions} from '@angular/material/core';
-import {By} from '@angular/platform-browser';
-import {dispatchFakeEvent, dispatchMouseEvent} from '@angular/cdk/testing/private';
-import {Direction, Directionality} from '@angular/cdk/bidi';
-import {Subject} from 'rxjs';
-import {MatTabLink, MatTabNav, MatTabsModule} from '../index';
+import { waitForAsync, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { MAT_RIPPLE_GLOBAL_OPTIONS, RippleGlobalOptions } from '@angular/material/core';
+import { By } from '@angular/platform-browser';
+import { dispatchFakeEvent, dispatchMouseEvent } from '@angular/cdk/testing/private';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Subject } from 'rxjs';
+import { MatTabLink, MatTabNav, MatTabsModule } from '../index';
 
 
 describe('MatTabNavBar', () => {
@@ -26,8 +26,8 @@ describe('MatTabNavBar', () => {
         TabBarWithInactiveTabsOnInit,
       ],
       providers: [
-        {provide: MAT_RIPPLE_GLOBAL_OPTIONS, useFactory: () => globalRippleOptions},
-        {provide: Directionality, useFactory: () => ({value: dir, change: dirChange})},
+        { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useFactory: () => globalRippleOptions },
+        { provide: Directionality, useFactory: () => ({ value: dir, change: dirChange }) },
       ]
     });
 
@@ -202,6 +202,13 @@ describe('MatTabNavBar', () => {
       expect(inkBar.hide).toHaveBeenCalled();
     });
 
+    it('should update the focusIndex when a tab receives focus directly', () => {
+      const thirdLink = fixture.debugElement.queryAll(By.css('a'))[2];
+      dispatchFakeEvent(thirdLink.nativeElement, 'focus');
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.tabNavBar.focusIndex).toBe(2);
+    });
   });
 
   it('should hide the ink bar if no tabs are active on init', fakeAsync(() => {
@@ -229,11 +236,11 @@ describe('MatTabNavBar', () => {
   });
 
   it('should support the native tabindex attribute', () => {
-      const fixture = TestBed.createComponent(TabLinkWithNativeTabindexAttr);
+    const fixture = TestBed.createComponent(TabLinkWithNativeTabindexAttr);
     fixture.detectChanges();
 
     const tabLink = fixture.debugElement.query(By.directive(MatTabLink))!
-        .injector.get<MatTabLink>(MatTabLink);
+      .injector.get<MatTabLink>(MatTabLink);
 
     expect(tabLink.tabIndex)
       .toBe(5, 'Expected the tabIndex to be set from the native tabindex attribute.');
@@ -244,7 +251,7 @@ describe('MatTabNavBar', () => {
     fixture.detectChanges();
 
     const tabLink = fixture.debugElement.query(By.directive(MatTabLink))!
-        .injector.get<MatTabLink>(MatTabLink);
+      .injector.get<MatTabLink>(MatTabLink);
 
     expect(tabLink.tabIndex).toBe(0, 'Expected the tabIndex to be set to 0 by default.');
 
@@ -337,10 +344,10 @@ describe('MatTabNavBar', () => {
 
     it('should have a focus indicator', () => {
       const tabLinkNativeElements =
-          [...fixture.debugElement.nativeElement.querySelectorAll('.mat-tab-link')];
+        [...fixture.debugElement.nativeElement.querySelectorAll('.mat-tab-link')];
 
       expect(tabLinkNativeElements
-          .every(element => element.classList.contains('mat-focus-indicator'))).toBe(true);
+        .every(element => element.classList.contains('mat-focus-indicator'))).toBe(true);
     });
   });
 });
@@ -400,7 +407,7 @@ class TabLinkWithTabIndexBinding {
     </nav>
   `
 })
-class TabLinkWithNativeTabindexAttr {}
+class TabLinkWithNativeTabindexAttr { }
 
 
 @Component({
