@@ -1,4 +1,4 @@
-import {Direction, Directionality} from '@angular/cdk/bidi';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   DOWN_ARROW,
   END,
@@ -9,17 +9,17 @@ import {
   RIGHT_ARROW,
   UP_ARROW,
 } from '@angular/cdk/keycodes';
-import {dispatchFakeEvent, dispatchKeyboardEvent} from '@angular/cdk/testing/private';
-import {Component, ViewChild} from '@angular/core';
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MatNativeDateModule} from '@angular/material/core';
-import {AUG, DEC, FEB, JAN, JUL, JUN, MAR, MAY, NOV, OCT, SEP} from '@angular/material/testing';
-import {By} from '@angular/platform-browser';
-import {MatCalendarBody} from './calendar-body';
-import {MatYearView} from './year-view';
+import { dispatchFakeEvent, dispatchKeyboardEvent } from '@angular/cdk/testing/private';
+import { Component, ViewChild } from '@angular/core';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatNativeDateModule } from '@angular/material/core';
+import { AUG, DEC, FEB, JAN, JUL, JUN, MAR, MAY, NOV, OCT, SEP } from '@angular/material/testing';
+import { By } from '@angular/platform-browser';
+import { MatCalendarBody } from './calendar-body';
+import { MatYearView } from './year-view';
 
 describe('MatYearView', () => {
-  let dir: {value: Direction};
+  let dir: { value: Direction };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -36,7 +36,7 @@ describe('MatYearView', () => {
         YearViewWithDateClass,
       ],
       providers: [
-        {provide: Directionality, useFactory: () => dir = {value: 'ltr'}}
+        { provide: Directionality, useFactory: () => dir = { value: 'ltr' } }
       ]
     });
 
@@ -109,7 +109,7 @@ describe('MatYearView', () => {
       testComponent.date = new Date(2017, JUL, 31);
       fixture.detectChanges();
 
-      testComponent.yearView._monthSelected({value: JUN, event: null!});
+      testComponent.yearView._monthSelected({ value: JUN, event: null! });
       fixture.detectChanges();
 
       expect(testComponent.selected).toEqual(new Date(2017, JUN, 30));
@@ -118,7 +118,7 @@ describe('MatYearView', () => {
     describe('a11y', () => {
       it('should set the correct role on the internal table node', () => {
         const table = yearViewNativeElement.querySelector('table')!;
-        expect(table.getAttribute('role')).toBe('presentation');
+        expect(table.getAttribute('role')).toBe('grid');
       });
 
       describe('calendar body', () => {
@@ -312,7 +312,7 @@ describe('MatYearView', () => {
       const activeDate = fixture.componentInstance.activeDate;
       const spy = spyOn(fixture.componentInstance, 'dateFilter').and.callThrough();
       fixture.componentInstance.minDate =
-          new Date(activeDate.getFullYear() + 1, activeDate.getMonth(), activeDate.getDate());
+        new Date(activeDate.getFullYear() + 1, activeDate.getMonth(), activeDate.getDate());
       fixture.detectChanges();
 
       expect(spy).not.toHaveBeenCalled();
@@ -323,7 +323,7 @@ describe('MatYearView', () => {
       const activeDate = fixture.componentInstance.activeDate;
       const spy = spyOn(fixture.componentInstance, 'dateFilter').and.callThrough();
       fixture.componentInstance.maxDate =
-          new Date(activeDate.getFullYear() - 1, activeDate.getMonth(), activeDate.getDate());
+        new Date(activeDate.getFullYear() - 1, activeDate.getMonth(), activeDate.getDate());
       fixture.detectChanges();
 
       expect(spy).not.toHaveBeenCalled();
