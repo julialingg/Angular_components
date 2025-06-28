@@ -1,17 +1,17 @@
-import {Directionality} from '@angular/cdk/bidi';
-import {Component} from '@angular/core';
+import { Directionality } from '@angular/cdk/bidi';
+import { Component } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
   waitForAsync
 } from '@angular/core/testing';
-import {MatNativeDateModule, DateAdapter} from '@angular/material/core';
-import {DEC, FEB, JAN} from '@angular/material/testing';
-import {By} from '@angular/platform-browser';
-import {MatCalendar} from './calendar';
-import {MatDatepickerIntl} from './datepicker-intl';
-import {MatDatepickerModule} from './datepicker-module';
-import {yearsPerPage} from './multi-year-view';
+import { MatNativeDateModule, DateAdapter } from '@angular/material/core';
+import { DEC, FEB, JAN } from '@angular/material/testing';
+import { By } from '@angular/platform-browser';
+import { MatCalendar } from './calendar';
+import { MatDatepickerIntl } from './datepicker-intl';
+import { MatDatepickerModule } from './datepicker-module';
+import { yearsPerPage } from './multi-year-view';
 
 describe('MatCalendarHeader', () => {
   beforeEach(waitForAsync(() => {
@@ -27,7 +27,7 @@ describe('MatCalendarHeader', () => {
       ],
       providers: [
         MatDatepickerIntl,
-        {provide: Directionality, useFactory: () => ({value: 'ltr'})},
+        { provide: Directionality, useFactory: () => ({ value: 'ltr' }) },
       ],
     });
 
@@ -77,41 +77,41 @@ describe('MatCalendarHeader', () => {
     });
 
     it('should emit viewChanged when view changed from \'month\' to \'multi-year\'',
-     () => {
-      expect(calendarInstance.currentView).toBe('month');
-      spyOn(calendarInstance.viewChanged, 'emit');
+      () => {
+        expect(calendarInstance.currentView).toBe('month');
+        spyOn(calendarInstance.viewChanged, 'emit');
 
-      periodButton.click();
-      fixture.detectChanges();
+        periodButton.click();
+        fixture.detectChanges();
 
-      expect(calendarInstance.viewChanged.emit).toHaveBeenCalledWith('multi-year');
-    });
+        expect(calendarInstance.viewChanged.emit).toHaveBeenCalledWith('multi-year');
+      });
 
     it('should emit viewChanged when view changed from \'multi-year\' to \'month\'',
       () => {
-      periodButton.click();
-      fixture.detectChanges();
-      expect(calendarInstance.currentView).toBe('multi-year');
-      spyOn(calendarInstance.viewChanged, 'emit');
+        periodButton.click();
+        fixture.detectChanges();
+        expect(calendarInstance.currentView).toBe('multi-year');
+        spyOn(calendarInstance.viewChanged, 'emit');
 
-      periodButton.click();
-      fixture.detectChanges();
+        periodButton.click();
+        fixture.detectChanges();
 
-      expect(calendarInstance.viewChanged.emit).toHaveBeenCalledWith('month');
-    });
+        expect(calendarInstance.viewChanged.emit).toHaveBeenCalledWith('month');
+      });
 
     it('should emit viewChanged when view changed from \'multi-year\' to \'year\'',
-    () => {
-      periodButton.click();
-      fixture.detectChanges();
-      expect(calendarInstance.currentView).toBe('multi-year');
-      spyOn(calendarInstance.viewChanged, 'emit');
+      () => {
+        periodButton.click();
+        fixture.detectChanges();
+        expect(calendarInstance.currentView).toBe('multi-year');
+        spyOn(calendarInstance.viewChanged, 'emit');
 
-      (calendarElement.querySelector('.mat-calendar-body-active') as HTMLElement).click();
-      fixture.detectChanges();
+        (calendarElement.querySelector('.mat-calendar-body-active') as HTMLElement).click();
+        fixture.detectChanges();
 
-      expect(calendarInstance.viewChanged.emit).toHaveBeenCalledWith('year');
-    });
+        expect(calendarInstance.viewChanged.emit).toHaveBeenCalledWith('year');
+      });
 
 
     it('should go to next and previous month', () => {
@@ -203,6 +203,14 @@ describe('MatCalendarHeader', () => {
       expect(calendarInstance.currentView).toBe('multi-year');
       expect(periodButton.textContent).toContain('FAKE_YEAR');
     });
+
+    it('should label and describe period button for assistive technology', () => {
+      const description = periodButton.querySelector('span[id]');
+      expect(periodButton.hasAttribute('aria-label')).toBe(true);
+      expect(periodButton.hasAttribute('aria-describedby')).toBe(true);
+      expect(periodButton.getAttribute('aria-describedby')).toBe(description?.getAttribute('id')!);
+    });
+
   });
 
   describe('calendar with minDate only', () => {
