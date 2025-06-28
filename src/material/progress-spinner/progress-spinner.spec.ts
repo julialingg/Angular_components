@@ -1,8 +1,8 @@
-import {TestBed, waitForAsync, inject} from '@angular/core/testing';
-import {Component, ViewEncapsulation, ViewChild, ElementRef} from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {Platform, _getShadowRoot, _supportsShadowDom} from '@angular/cdk/platform';
-import {CommonModule} from '@angular/common';
+import { TestBed, waitForAsync, inject } from '@angular/core/testing';
+import { Component, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { Platform, _getShadowRoot, _supportsShadowDom } from '@angular/cdk/platform';
+import { CommonModule } from '@angular/common';
 import {
   MatProgressSpinnerModule,
   MatProgressSpinner,
@@ -146,15 +146,15 @@ describe('MatProgressSpinner', () => {
     fixture.detectChanges();
 
     expect(parseInt(spinner.style.width))
-        .toBe(32, 'Expected the custom diameter to be applied to the host element width.');
+      .toBe(32, 'Expected the custom diameter to be applied to the host element width.');
     expect(parseInt(spinner.style.height))
-        .toBe(32, 'Expected the custom diameter to be applied to the host element height.');
+      .toBe(32, 'Expected the custom diameter to be applied to the host element height.');
     expect(parseInt(svgElement.style.width))
-        .toBe(32, 'Expected the custom diameter to be applied to the svg element width.');
+      .toBe(32, 'Expected the custom diameter to be applied to the svg element width.');
     expect(parseInt(svgElement.style.height))
-        .toBe(32, 'Expected the custom diameter to be applied to the svg element height.');
+      .toBe(32, 'Expected the custom diameter to be applied to the svg element height.');
     expect(svgElement.getAttribute('viewBox'))
-        .toBe('0 0 25.2 25.2', 'Expected the custom diameter to be applied to the svg viewBox.');
+      .toBe('0 0 25.2 25.2', 'Expected the custom diameter to be applied to the svg viewBox.');
   });
 
   it('should add a style tag with the indeterminate animation to the document head when using a ' +
@@ -184,27 +184,27 @@ describe('MatProgressSpinner', () => {
 
       expect(document.head.querySelectorAll('style[mat-spinner-animation="32"]').length).toBe(1);
       expect(document.head.querySelectorAll('style[mat-spinner-animation="64"]').length).toBe(1);
-  }));
+    }));
 
   it('should allow floating point values for custom diameter', () => {
-      const fixture = TestBed.createComponent(ProgressSpinnerCustomDiameter);
+    const fixture = TestBed.createComponent(ProgressSpinnerCustomDiameter);
 
-      fixture.componentInstance.diameter = 32.5;
-      fixture.detectChanges();
+    fixture.componentInstance.diameter = 32.5;
+    fixture.detectChanges();
 
-      const spinner = fixture.debugElement.query(By.css('mat-progress-spinner'))!.nativeElement;
-      const svgElement = fixture.nativeElement.querySelector('svg');
+    const spinner = fixture.debugElement.query(By.css('mat-progress-spinner'))!.nativeElement;
+    const svgElement = fixture.nativeElement.querySelector('svg');
 
-      expect(parseFloat(spinner.style.width))
-        .toBe(32.5, 'Expected the custom diameter to be applied to the host element width.');
-      expect(parseFloat(spinner.style.height))
-        .toBe(32.5, 'Expected the custom diameter to be applied to the host element height.');
-      expect(parseFloat(svgElement.style.width))
-        .toBe(32.5, 'Expected the custom diameter to be applied to the svg element width.');
-      expect(parseFloat(svgElement.style.height))
-        .toBe(32.5, 'Expected the custom diameter to be applied to the svg element height.');
-      expect(svgElement.getAttribute('viewBox'))
-        .toBe('0 0 25.75 25.75', 'Expected the custom diameter to be applied to the svg viewBox.');
+    expect(parseFloat(spinner.style.width))
+      .toBe(32.5, 'Expected the custom diameter to be applied to the host element width.');
+    expect(parseFloat(spinner.style.height))
+      .toBe(32.5, 'Expected the custom diameter to be applied to the host element height.');
+    expect(parseFloat(svgElement.style.width))
+      .toBe(32.5, 'Expected the custom diameter to be applied to the svg element width.');
+    expect(parseFloat(svgElement.style.height))
+      .toBe(32.5, 'Expected the custom diameter to be applied to the svg element height.');
+    expect(svgElement.getAttribute('viewBox'))
+      .toBe('0 0 25.75 25.75', 'Expected the custom diameter to be applied to the svg viewBox.');
   });
 
   it('should handle creating animation style tags based on a floating point diameter',
@@ -223,10 +223,10 @@ describe('MatProgressSpinner', () => {
       const circleElement = fixture.nativeElement.querySelector('circle');
 
       expect(circleElement.style.animationName).toBe('mat-progress-spinner-stroke-rotate-32_5',
-      'Expected the spinner circle element to have an animation name based on the custom diameter');
+        'Expected the spinner circle element to have an animation name based on the custom diameter');
       expect(document.head.querySelectorAll('style[mat-spinner-animation="32_5"]').length).toBe(1,
-      'Expected a style tag with the indeterminate animation to be attached to the document head');
-  }));
+        'Expected a style tag with the indeterminate animation to be attached to the document head');
+    }));
 
   it('should allow a custom stroke width', () => {
     const fixture = TestBed.createComponent(ProgressSpinnerCustomStrokeWidth);
@@ -353,7 +353,7 @@ describe('MatProgressSpinner', () => {
         declarations: [BasicProgressSpinner],
         providers: [{
           provide: MAT_PROGRESS_SPINNER_DEFAULT_OPTIONS,
-          useValue: {diameter: 23}
+          useValue: { diameter: 23 }
         }]
       })
       .compileComponents();
@@ -373,7 +373,7 @@ describe('MatProgressSpinner', () => {
         declarations: [BasicProgressSpinner],
         providers: [{
           provide: MAT_PROGRESS_SPINNER_DEFAULT_OPTIONS,
-          useValue: {strokeWidth: 7}
+          useValue: { strokeWidth: 7 }
         }]
       })
       .compileComponents();
@@ -483,23 +483,34 @@ describe('MatProgressSpinner', () => {
       expect(shadowRoot.querySelector('style[mat-spinner-animation="27"]')).toBeTruthy();
     });
 
+  it('should apply aria-hidden to child nodes', () => {
+    const fixture = TestBed.createComponent(BasicProgressSpinner);
+    fixture.detectChanges();
+
+    const progressElement = fixture.nativeElement.querySelector('mat-progress-spinner');
+    const children = Array.from<HTMLElement>(progressElement.children);
+
+    expect(children.length).toBeGreaterThan(0);
+    expect(children.every(child => child.getAttribute('aria-hidden') === 'true')).toBe(true);
+  });
+
 });
 
 
-@Component({template: '<mat-progress-spinner></mat-progress-spinner>'})
-class BasicProgressSpinner {}
+@Component({ template: '<mat-progress-spinner></mat-progress-spinner>' })
+class BasicProgressSpinner { }
 
-@Component({template: '<mat-progress-spinner [strokeWidth]="strokeWidth"></mat-progress-spinner>'})
+@Component({ template: '<mat-progress-spinner [strokeWidth]="strokeWidth"></mat-progress-spinner>' })
 class ProgressSpinnerCustomStrokeWidth {
   strokeWidth: number;
 }
 
-@Component({template: '<mat-progress-spinner [diameter]="diameter"></mat-progress-spinner>'})
+@Component({ template: '<mat-progress-spinner [diameter]="diameter"></mat-progress-spinner>' })
 class ProgressSpinnerCustomDiameter {
   diameter: number;
 }
 
-@Component({template: '<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>'})
+@Component({ template: '<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>' })
 class IndeterminateProgressSpinner { }
 
 @Component({
@@ -519,10 +530,10 @@ class ProgressSpinnerWithValueAndBoundMode {
   value = 50;
 }
 
-@Component({template: `<mat-spinner [color]="color"></mat-spinner>`})
+@Component({ template: `<mat-spinner [color]="color"></mat-spinner>` })
 class SpinnerWithColor { color: string = 'primary'; }
 
-@Component({template: `<mat-progress-spinner value="50" [color]="color"></mat-progress-spinner>`})
+@Component({ template: `<mat-progress-spinner value="50" [color]="color"></mat-progress-spinner>` })
 class ProgressSpinnerWithColor { color: string = 'primary'; }
 
 @Component({
@@ -552,9 +563,8 @@ class IndeterminateSpinnerInShadowDom {
   encapsulation: ViewEncapsulation.ShadowDom,
 })
 class IndeterminateSpinnerInShadowDomWithNgIf {
-  @ViewChild(MatProgressSpinner, {read: ElementRef})
+  @ViewChild(MatProgressSpinner, { read: ElementRef })
   spinner: ElementRef<HTMLElement>;
 
   diameter: number;
 }
-
