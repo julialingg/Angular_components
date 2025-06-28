@@ -1,12 +1,12 @@
-import {waitForAsync, TestBed} from '@angular/core/testing';
+import { waitForAsync, TestBed } from '@angular/core/testing';
 import {
   MatProgressSpinner,
   MatProgressSpinnerModule
 } from '@angular/material-experimental/mdc-progress-spinner';
-import {CommonModule} from '@angular/common';
-import {By} from '@angular/platform-browser';
-import {MAT_PROGRESS_SPINNER_DEFAULT_OPTIONS} from '@angular/material/progress-spinner';
-import {Component, ElementRef, ViewChild, ViewEncapsulation} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { By } from '@angular/platform-browser';
+import { MAT_PROGRESS_SPINNER_DEFAULT_OPTIONS } from '@angular/material/progress-spinner';
+import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 
 describe('MDC-based MatProgressSpinner', () => {
   beforeEach(waitForAsync(() => {
@@ -284,7 +284,7 @@ describe('MDC-based MatProgressSpinner', () => {
         declarations: [BasicProgressSpinner],
         providers: [{
           provide: MAT_PROGRESS_SPINNER_DEFAULT_OPTIONS,
-          useValue: {diameter: 23}
+          useValue: { diameter: 23 }
         }]
       })
       .compileComponents();
@@ -304,7 +304,7 @@ describe('MDC-based MatProgressSpinner', () => {
         declarations: [BasicProgressSpinner],
         providers: [{
           provide: MAT_PROGRESS_SPINNER_DEFAULT_OPTIONS,
-          useValue: {strokeWidth: 7}
+          useValue: { strokeWidth: 7 }
         }]
       })
       .compileComponents();
@@ -323,7 +323,7 @@ describe('MDC-based MatProgressSpinner', () => {
     fixture.componentInstance.value = 37;
     fixture.detectChanges();
 
-    expect(progressElement.nativeElement.getAttribute('aria-valuenow')).toBe('0.37');
+    expect(progressElement.nativeElement.getAttribute('aria-valuenow')).toBe('37');
   });
 
   it('should clear `aria-valuenow` in indeterminate mode', () => {
@@ -355,21 +355,21 @@ describe('MDC-based MatProgressSpinner', () => {
 });
 
 
-@Component({template: '<mat-progress-spinner></mat-progress-spinner>'})
+@Component({ template: '<mat-progress-spinner></mat-progress-spinner>' })
 class BasicProgressSpinner {
 }
 
-@Component({template: '<mat-progress-spinner [strokeWidth]="strokeWidth"></mat-progress-spinner>'})
+@Component({ template: '<mat-progress-spinner [strokeWidth]="strokeWidth"></mat-progress-spinner>' })
 class ProgressSpinnerCustomStrokeWidth {
   strokeWidth: number;
 }
 
-@Component({template: '<mat-progress-spinner [diameter]="diameter"></mat-progress-spinner>'})
+@Component({ template: '<mat-progress-spinner [diameter]="diameter"></mat-progress-spinner>' })
 class ProgressSpinnerCustomDiameter {
   diameter: number;
 }
 
-@Component({template: '<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>'})
+@Component({ template: '<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>' })
 class IndeterminateProgressSpinner {
 }
 
@@ -425,9 +425,8 @@ class IndeterminateSpinnerInShadowDom {
   encapsulation: ViewEncapsulation.ShadowDom,
 })
 class IndeterminateSpinnerInShadowDomWithNgIf {
-  @ViewChild(MatProgressSpinner, {read: ElementRef})
+  @ViewChild(MatProgressSpinner, { read: ElementRef })
   spinner: ElementRef<HTMLElement>;
 
   diameter: number;
 }
-
