@@ -1,16 +1,16 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
-import {Component, DebugElement, Type} from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {dispatchFakeEvent} from '@angular/cdk/testing/private';
-import {MatProgressBarModule, MAT_PROGRESS_BAR_LOCATION} from './index';
-import {MatProgressBar} from './progress-bar';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { Component, DebugElement, Type } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { dispatchFakeEvent } from '@angular/cdk/testing/private';
+import { MatProgressBarModule, MAT_PROGRESS_BAR_LOCATION } from './index';
+import { MatProgressBar } from './progress-bar';
 
 
 describe('MatProgressBar', () => {
   let fakePath: string;
 
   function createComponent<T>(componentType: Type<T>,
-                              imports?: Type<{}>[]): ComponentFixture<T> {
+    imports?: Type<{}>[]): ComponentFixture<T> {
     fakePath = '/fake-path';
 
     TestBed.configureTestingModule({
@@ -18,12 +18,25 @@ describe('MatProgressBar', () => {
       declarations: [componentType],
       providers: [{
         provide: MAT_PROGRESS_BAR_LOCATION,
-        useValue: {getPathname: () => fakePath}
+        useValue: { getPathname: () => fakePath }
       }]
     }).compileComponents();
 
     return TestBed.createComponent<T>(componentType);
   }
+
+  // All children need to be hidden for screen readers in order to support ChromeVox.
+  // More context in the issue: https://github.com/angular/components/issues/22165.
+  it('should have elements wrapped in aria-hidden div', () => {
+    const fixture = createComponent(BasicProgressBar);
+    const host = fixture.nativeElement as Element;
+    const element = host.children[0];
+    expect(element.children.length).toBe(1);
+
+    const div = element.querySelector('div')!;
+    expect(div).toBeTruthy();
+    expect(div.getAttribute('aria-hidden')).toBe('true');
+  });
 
   describe('with animation', () => {
     describe('basic progress-bar', () => {
@@ -75,27 +88,27 @@ describe('MatProgressBar', () => {
         const progressElement = fixture.debugElement.query(By.css('mat-progress-bar'))!;
         const progressComponent = progressElement.componentInstance;
 
-        expect(progressComponent._primaryTransform()).toEqual({transform: 'scale3d(0, 1, 1)'});
+        expect(progressComponent._primaryTransform()).toEqual({ transform: 'scale3d(0, 1, 1)' });
         expect(progressComponent._bufferTransform()).toBe(null);
 
         progressComponent.value = 40;
-        expect(progressComponent._primaryTransform()).toEqual({transform: 'scale3d(0.4, 1, 1)'});
+        expect(progressComponent._primaryTransform()).toEqual({ transform: 'scale3d(0.4, 1, 1)' });
         expect(progressComponent._bufferTransform()).toBe(null);
 
         progressComponent.value = 35;
         progressComponent.bufferValue = 55;
-        expect(progressComponent._primaryTransform()).toEqual({transform: 'scale3d(0.35, 1, 1)'});
+        expect(progressComponent._primaryTransform()).toEqual({ transform: 'scale3d(0.35, 1, 1)' });
         expect(progressComponent._bufferTransform()).toBe(null);
 
         progressComponent.mode = 'buffer';
-        expect(progressComponent._primaryTransform()).toEqual({transform: 'scale3d(0.35, 1, 1)'});
-        expect(progressComponent._bufferTransform()).toEqual({transform: 'scale3d(0.55, 1, 1)'});
+        expect(progressComponent._primaryTransform()).toEqual({ transform: 'scale3d(0.35, 1, 1)' });
+        expect(progressComponent._bufferTransform()).toEqual({ transform: 'scale3d(0.55, 1, 1)' });
 
 
         progressComponent.value = 60;
         progressComponent.bufferValue = 60;
-        expect(progressComponent._primaryTransform()).toEqual({transform: 'scale3d(0.6, 1, 1)'});
-        expect(progressComponent._bufferTransform()).toEqual({transform: 'scale3d(0.6, 1, 1)'});
+        expect(progressComponent._primaryTransform()).toEqual({ transform: 'scale3d(0.6, 1, 1)' });
+        expect(progressComponent._bufferTransform()).toEqual({ transform: 'scale3d(0.6, 1, 1)' });
       });
 
       it('should prefix SVG references with the current path', () => {
@@ -153,13 +166,13 @@ describe('MatProgressBar', () => {
         fixture.detectChanges();
 
         expect(progressElement.nativeElement.getAttribute('aria-valuenow'))
-            .toBe('50', 'Expected aria-valuenow to be set in determinate mode.');
+          .toBe('50', 'Expected aria-valuenow to be set in determinate mode.');
 
         progressComponent.mode = 'indeterminate';
         fixture.detectChanges();
 
         expect(progressElement.nativeElement.hasAttribute('aria-valuenow'))
-            .toBe(false, 'Expect aria-valuenow to be cleared in indeterminate mode.');
+          .toBe(false, 'Expect aria-valuenow to be cleared in indeterminate mode.');
       });
 
       it('should remove the `aria-valuenow` attribute in query mode', () => {
@@ -174,13 +187,13 @@ describe('MatProgressBar', () => {
         fixture.detectChanges();
 
         expect(progressElement.nativeElement.getAttribute('aria-valuenow'))
-            .toBe('50', 'Expected aria-valuenow to be set in determinate mode.');
+          .toBe('50', 'Expected aria-valuenow to be set in determinate mode.');
 
         progressComponent.mode = 'query';
         fixture.detectChanges();
 
         expect(progressElement.nativeElement.hasAttribute('aria-valuenow'))
-            .toBe(false, 'Expect aria-valuenow to be cleared in query mode.');
+          .toBe(false, 'Expect aria-valuenow to be cleared in query mode.');
       });
 
     });
@@ -230,7 +243,7 @@ describe('MatProgressBar', () => {
 
         expect(primaryValueBar.nativeElement.addEventListener).toHaveBeenCalled();
         expect(primaryValueBar.nativeElement.addEventListener
-               .calls.mostRecent().args[0]).toBe('transitionend');
+          .calls.mostRecent().args[0]).toBe('transitionend');
       });
 
       it('should trigger output event on primary value bar animation end', () => {
@@ -262,8 +275,8 @@ describe('MatProgressBar', () => {
 
 });
 
-@Component({template: '<mat-progress-bar></mat-progress-bar>'})
+@Component({ template: '<mat-progress-bar></mat-progress-bar>' })
 class BasicProgressBar { }
 
-@Component({template: '<mat-progress-bar mode="buffer"></mat-progress-bar>'})
+@Component({ template: '<mat-progress-bar mode="buffer"></mat-progress-bar>' })
 class BufferProgressBar { }
