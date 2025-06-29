@@ -1,9 +1,9 @@
-import {dispatchMouseEvent} from '@angular/cdk/testing/private';
-import {Component, DebugElement, QueryList, ViewChild, ViewChildren} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ComponentFixture, fakeAsync, flush, TestBed, tick} from '@angular/core/testing';
-import {FormControl, FormsModule, NgModel, ReactiveFormsModule} from '@angular/forms';
-import {By} from '@angular/platform-browser';
+import { dispatchMouseEvent } from '@angular/cdk/testing/private';
+import { Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { FormControl, FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import {
   MatButtonToggle,
   MatButtonToggleChange,
@@ -124,15 +124,15 @@ describe('MatButtonToggle with forms', () => {
     });
 
     it('should update the name of radio DOM elements if the name of the group changes', () => {
-       expect(innerButtons.every(button => button.getAttribute('name') === groupInstance.name))
-          .toBe(true, 'Expected all buttons to have the initial name.');
+      expect(innerButtons.every(button => button.getAttribute('name') === groupInstance.name))
+        .toBe(true, 'Expected all buttons to have the initial name.');
 
-       fixture.componentInstance.groupName = 'changed-name';
+      fixture.componentInstance.groupName = 'changed-name';
       fixture.detectChanges();
 
-       expect(groupInstance.name).toBe('changed-name');
+      expect(groupInstance.name).toBe('changed-name');
       expect(innerButtons.every(button => button.getAttribute('name') === groupInstance.name))
-          .toBe(true, 'Expected all buttons to have the new name.');
+        .toBe(true, 'Expected all buttons to have the new name.');
     });
 
     it('should check the corresponding button toggle on a group value change', () => {
@@ -241,7 +241,7 @@ describe('MatButtonToggle with forms', () => {
     const button = fixture.nativeElement.querySelector('.mat-button-toggle button');
     const groupDebugElement = fixture.debugElement.query(By.directive(MatButtonToggleGroup))!;
     const groupInstance =
-        groupDebugElement.injector.get<MatButtonToggleGroup>(MatButtonToggleGroup);
+      groupDebugElement.injector.get<MatButtonToggleGroup>(MatButtonToggleGroup);
 
     button.click();
     fixture.detectChanges();
@@ -501,7 +501,7 @@ describe('MatButtonToggle without forms', () => {
       let testComponent = fixture.debugElement.componentInstance;
       let groupDebugElement = fixture.debugElement.query(By.directive(MatButtonToggleGroup))!;
       let groupInstance: MatButtonToggleGroup = groupDebugElement.injector
-          .get<MatButtonToggleGroup>(MatButtonToggleGroup);
+        .get<MatButtonToggleGroup>(MatButtonToggleGroup);
 
       fixture.detectChanges();
 
@@ -584,7 +584,7 @@ describe('MatButtonToggle without forms', () => {
 
     it('should check a button toggle upon interaction with underlying native checkbox', () => {
       let nativeCheckboxButton =
-          buttonToggleDebugElements[0].query(By.css('button'))!.nativeElement;
+        buttonToggleDebugElements[0].query(By.css('button'))!.nativeElement;
 
       nativeCheckboxButton.click();
       fixture.detectChanges();
@@ -664,10 +664,10 @@ describe('MatButtonToggle without forms', () => {
       buttonToggleDebugElement = fixture.debugElement.query(By.directive(MatButtonToggle))!;
       buttonToggleNativeElement = buttonToggleDebugElement.nativeElement;
       buttonToggleLabelElement = fixture.debugElement
-          .query(By.css('.mat-button-toggle-label-content'))!.nativeElement;
+        .query(By.css('.mat-button-toggle-label-content'))!.nativeElement;
       buttonToggleInstance = buttonToggleDebugElement.componentInstance;
       buttonToggleButtonElement =
-          buttonToggleNativeElement.querySelector('button')! as HTMLButtonElement;
+        buttonToggleNativeElement.querySelector('button')! as HTMLButtonElement;
     }));
 
     it('should toggle when clicked', fakeAsync(() => {
@@ -721,7 +721,7 @@ describe('MatButtonToggle without forms', () => {
 
     it('should have correct aria-pressed attribute', () => {
       expect(buttonToggleButtonElement.getAttribute('aria-pressed'))
-          .toBe('false');
+        .toBe('false');
 
       buttonToggleLabelElement.click();
 
@@ -800,13 +800,13 @@ describe('MatButtonToggle without forms', () => {
       expect(button.getAttribute('tabindex')).toBe('3');
     });
 
-    it('should clear the tabindex from the host element', () => {
+    it('should have role "presentation"', () => {
       const fixture = TestBed.createComponent(ButtonToggleWithTabindex);
       fixture.detectChanges();
 
       const host = fixture.nativeElement.querySelector('.mat-button-toggle');
 
-      expect(host.getAttribute('tabindex')).toBe('-1');
+      expect(host.getAttribute('role')).toBe('presentation');
     });
 
     it('should forward focus to the underlying button when the host is focused', () => {
@@ -892,7 +892,7 @@ describe('MatButtonToggle without forms', () => {
     const buttonNativeElements = [...fixture.debugElement.nativeElement.querySelectorAll('button')];
 
     expect(buttonNativeElements.every(element => element.classList.contains('mat-focus-indicator')))
-        .toBe(true);
+      .toBe(true);
   });
 
   it('should be able to pre-check a button toggle using a static checked binding', () => {
@@ -940,9 +940,9 @@ class ButtonToggleGroupWithNgModel {
   groupName = 'group-name';
   modelValue: string;
   options = [
-    {label: 'Red', value: 'red'},
-    {label: 'Green', value: 'green'},
-    {label: 'Blue', value: 'blue'},
+    { label: 'Red', value: 'red' },
+    { label: 'Green', value: 'green' },
+    { label: 'Blue', value: 'blue' },
   ];
   lastEvent: MatButtonToggleChange;
   disableRipple = false;
@@ -1035,7 +1035,7 @@ class ButtonToggleWithAriaLabel { }
 @Component({
   template: `<mat-button-toggle aria-labelledby="some-id"></mat-button-toggle>`
 })
-class ButtonToggleWithAriaLabelledby {}
+class ButtonToggleWithAriaLabelledby { }
 
 
 @Component({
@@ -1059,12 +1059,12 @@ class RepeatedButtonTogglesWithPreselectedValue {
 @Component({
   template: `<mat-button-toggle tabindex="3"></mat-button-toggle>`
 })
-class ButtonToggleWithTabindex {}
+class ButtonToggleWithTabindex { }
 
 @Component({
   template: `<mat-button-toggle name="custom-name"></mat-button-toggle>`
 })
-class ButtonToggleWithStaticName {}
+class ButtonToggleWithStaticName { }
 
 
 @Component({
@@ -1086,4 +1086,4 @@ class ButtonToggleWithStaticChecked {
     <mat-button-toggle aria-label="Toggle me" aria-labelledby="something"></mat-button-toggle>
   `
 })
-class ButtonToggleWithStaticAriaAttributes {}
+class ButtonToggleWithStaticAriaAttributes { }
