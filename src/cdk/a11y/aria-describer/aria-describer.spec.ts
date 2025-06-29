@@ -1,8 +1,7 @@
-import {A11yModule, CDK_DESCRIBEDBY_HOST_ATTRIBUTE} from '../index';
-import {AriaDescriber, MESSAGES_CONTAINER_ID} from './aria-describer';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {Component, ElementRef, ViewChild, Provider} from '@angular/core';
-import {Platform} from '@angular/cdk/platform';
+import { A11yModule, CDK_DESCRIBEDBY_HOST_ATTRIBUTE } from '../index';
+import { AriaDescriber, MESSAGES_CONTAINER_ID } from './aria-describer';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, ElementRef, ViewChild, Provider } from '@angular/core';
 
 describe('AriaDescriber', () => {
   let ariaDescriber: AriaDescriber;
@@ -48,6 +47,12 @@ describe('AriaDescriber', () => {
     createFixture();
     ariaDescriber.describe(component.element1, 'My Message');
     expect(getMessagesContainer().classList).toContain('cdk-visually-hidden');
+  });
+
+  it('should have visibility hidden', () => {
+    createFixture();
+    ariaDescriber.describe(component.element1, 'My Message');
+    expect((getMessagesContainer() as HTMLElement).style.visibility).toBe('hidden');
   });
 
   it('should not register empty strings', () => {
@@ -123,19 +128,19 @@ describe('AriaDescriber', () => {
     const descriptionNode = fixture.nativeElement.querySelector('#description-with-existing-id');
 
     expect(document.body.contains(descriptionNode))
-        .toBe(true, 'Expected node to be inside the document to begin with.');
+      .toBe(true, 'Expected node to be inside the document to begin with.');
     expect(getMessagesContainer()).toBeNull('Expected no messages container on init.');
 
     ariaDescriber.describe(component.element1, descriptionNode);
 
     expectMessage(component.element1, 'Hello');
     expect(getMessagesContainer())
-        .toBeNull('Expected no messages container after the element was described.');
+      .toBeNull('Expected no messages container after the element was described.');
 
     ariaDescriber.removeDescription(component.element1, descriptionNode);
 
     expect(document.body.contains(descriptionNode)).toBe(true,
-        'Expected description node to still be in the DOM after it is no longer being used.');
+      'Expected description node to still be in the DOM after it is no longer being used.');
   });
 
   it('should keep nodes set as descriptions inside their original position in the DOM', () => {
@@ -149,7 +154,7 @@ describe('AriaDescriber', () => {
 
     expectMessage(component.element1, 'Hello');
     expect(descriptionNode.parentNode).toBe(initialParent,
-        'Expected node to stay inside the same parent when used as a description.');
+      'Expected node to stay inside the same parent when used as a description.');
 
     ariaDescriber.removeDescription(component.element1, descriptionNode);
 
@@ -242,7 +247,7 @@ describe('AriaDescriber', () => {
     const descriptionNode = fixture.nativeElement.querySelector('#description-with-existing-id');
 
     expect(document.body.contains(descriptionNode))
-        .toBe(true, 'Expected node to be inside the document to begin with.');
+      .toBe(true, 'Expected node to be inside the document to begin with.');
 
     ariaDescriber.describe(component.element1, descriptionNode);
 
@@ -253,7 +258,7 @@ describe('AriaDescriber', () => {
 
     expect(component.element1.hasAttribute(CDK_DESCRIBEDBY_HOST_ATTRIBUTE)).toBe(false);
     expect(document.body.contains(descriptionNode)).toBe(true,
-        'Expected description node to still be in the DOM after it is no longer being used.');
+      'Expected description node to still be in the DOM after it is no longer being used.');
   });
 
   it('should remove the aria-describedby attribute if there are no more messages', () => {
@@ -267,24 +272,6 @@ describe('AriaDescriber', () => {
 
     ariaDescriber.removeDescription(component.element1, 'Message');
     expect(element.hasAttribute('aria-describedby')).toBe(false);
-  });
-
-  it('should set `aria-hidden` on the container by default', () => {
-    createFixture([{provide: Platform, useValue: {BLINK: true}}]);
-    ariaDescriber.describe(component.element1, 'My Message');
-    expect(getMessagesContainer().getAttribute('aria-hidden')).toBe('true');
-  });
-
-  it('should disable `aria-hidden` on the container in IE', () => {
-    createFixture([{provide: Platform, useValue: {TRIDENT: true}}]);
-    ariaDescriber.describe(component.element1, 'My Message');
-    expect(getMessagesContainer().getAttribute('aria-hidden')).toBe('false');
-  });
-
-  it('should disable `aria-hidden` on the container in Edge', () => {
-    createFixture([{provide: Platform, useValue: {EDGE: true}}]);
-    ariaDescriber.describe(component.element1, 'My Message');
-    expect(getMessagesContainer().getAttribute('aria-hidden')).toBe('false');
   });
 
   it('should be able to register the same message with different roles', () => {
