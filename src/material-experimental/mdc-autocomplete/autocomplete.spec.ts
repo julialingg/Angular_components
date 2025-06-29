@@ -1,8 +1,8 @@
-import {Directionality} from '@angular/cdk/bidi';
-import {DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW} from '@angular/cdk/keycodes';
-import {Overlay, OverlayContainer} from '@angular/cdk/overlay';
-import {_supportsShadowDom} from '@angular/cdk/platform';
-import {ScrollDispatcher} from '@angular/cdk/scrolling';
+import { Directionality } from '@angular/cdk/bidi';
+import { DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
+import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
+import { _supportsShadowDom } from '@angular/cdk/platform';
+import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import {
   clearElement,
   createKeyboardEvent,
@@ -34,14 +34,14 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatOption, MatOptionSelectionChange} from '@angular/material-experimental/mdc-core';
-import {MatFormField, MatFormFieldModule} from '@angular/material-experimental/mdc-form-field';
-import {MatInputModule} from '@angular/material-experimental/mdc-input';
-import {By} from '@angular/platform-browser';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {EMPTY, Observable, Subject, Subscription} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatOption, MatOptionSelectionChange } from '@angular/material-experimental/mdc-core';
+import { MatFormField, MatFormFieldModule } from '@angular/material-experimental/mdc-form-field';
+import { MatInputModule } from '@angular/material-experimental/mdc-input';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { EMPTY, Observable, Subject, Subscription } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import {
   getMatAutocompleteMissingPanelError,
   MatAutocomplete,
@@ -72,7 +72,7 @@ describe('MDC-based MatAutocomplete', () => {
       ],
       declarations: [component],
       providers: [
-        {provide: NgZone, useFactory: () => zone = new MockNgZone()},
+        { provide: NgZone, useFactory: () => zone = new MockNgZone() },
         ...providers
       ]
     });
@@ -106,17 +106,17 @@ describe('MDC-based MatAutocomplete', () => {
 
     it('should open the panel when the input is focused', () => {
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(false, `Expected panel state to start out closed.`);
+        .toBe(false, `Expected panel state to start out closed.`);
 
       dispatchFakeEvent(input, 'focusin');
       fixture.detectChanges();
 
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(true, `Expected panel state to read open when input is focused.`);
+        .toBe(true, `Expected panel state to read open when input is focused.`);
       expect(overlayContainerElement.textContent)
-          .toContain('Alabama', `Expected panel to display when input is focused.`);
+        .toContain('Alabama', `Expected panel to display when input is focused.`);
       expect(overlayContainerElement.textContent)
-          .toContain('California', `Expected panel to display when input is focused.`);
+        .toContain('California', `Expected panel to display when input is focused.`);
     });
 
     it('should not open the panel on focus if the input is readonly', fakeAsync(() => {
@@ -147,17 +147,17 @@ describe('MDC-based MatAutocomplete', () => {
 
     it('should open the panel programmatically', () => {
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(false, `Expected panel state to start out closed.`);
+        .toBe(false, `Expected panel state to start out closed.`);
 
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
 
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(true, `Expected panel state to read open when opened programmatically.`);
+        .toBe(true, `Expected panel state to read open when opened programmatically.`);
       expect(overlayContainerElement.textContent)
-          .toContain('Alabama', `Expected panel to display when opened programmatically.`);
+        .toContain('Alabama', `Expected panel to display when opened programmatically.`);
       expect(overlayContainerElement.textContent)
-          .toContain('California', `Expected panel to display when opened programmatically.`);
+        .toContain('California', `Expected panel to display when opened programmatically.`);
     });
 
     it('should show the panel when the first open is after the initial zone stabilization',
@@ -170,7 +170,7 @@ describe('MDC-based MatAutocomplete', () => {
 
           Promise.resolve().then(() => {
             expect(fixture.componentInstance.panel.showPanel)
-                .toBe(true, `Expected panel to be visible.`);
+              .toBe(true, `Expected panel to be visible.`);
           });
         });
       }));
@@ -182,9 +182,9 @@ describe('MDC-based MatAutocomplete', () => {
       dispatchFakeEvent(document, 'click');
 
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(false, `Expected clicking outside the panel to set its state to closed.`);
+        .toBe(false, `Expected clicking outside the panel to set its state to closed.`);
       expect(overlayContainerElement.textContent)
-          .toEqual('', `Expected clicking outside the panel to close the panel.`);
+        .toEqual('', `Expected clicking outside the panel to close the panel.`);
     }));
 
     it('should close the panel when the user taps away on a touch device', fakeAsync(() => {
@@ -194,9 +194,9 @@ describe('MDC-based MatAutocomplete', () => {
       dispatchFakeEvent(document, 'touchend');
 
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(false, `Expected tapping outside the panel to set its state to closed.`);
+        .toBe(false, `Expected tapping outside the panel to set its state to closed.`);
       expect(overlayContainerElement.textContent)
-          .toEqual('', `Expected tapping outside the panel to close the panel.`);
+        .toEqual('', `Expected tapping outside the panel to close the panel.`);
     }));
 
     it('should close the panel when an option is clicked', fakeAsync(() => {
@@ -209,9 +209,9 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(false, `Expected clicking an option to set the panel state to closed.`);
+        .toBe(false, `Expected clicking an option to set the panel state to closed.`);
       expect(overlayContainerElement.textContent)
-          .toEqual('', `Expected clicking an option to close the panel.`);
+        .toEqual('', `Expected clicking an option to close the panel.`);
     }));
 
     it('should close the panel when a newly created option is clicked', fakeAsync(() => {
@@ -225,7 +225,7 @@ describe('MDC-based MatAutocomplete', () => {
       tick();
 
       let options =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
       options[0].click();
 
       // Changing value from 'Alabama' to 'al' to re-populate the option list,
@@ -241,9 +241,9 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(false, `Expected clicking a new option to set the panel state to closed.`);
+        .toBe(false, `Expected clicking a new option to set the panel state to closed.`);
       expect(overlayContainerElement.textContent)
-          .toEqual('', `Expected clicking a new option to close the panel.`);
+        .toEqual('', `Expected clicking a new option to close the panel.`);
     }));
 
     it('should close the panel programmatically', () => {
@@ -254,9 +254,9 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(false, `Expected closing programmatically to set the panel state to closed.`);
+        .toBe(false, `Expected closing programmatically to set the panel state to closed.`);
       expect(overlayContainerElement.textContent)
-          .toEqual('', `Expected closing programmatically to close the panel.`);
+        .toEqual('', `Expected closing programmatically to close the panel.`);
     });
 
     it('should not throw when attempting to close the panel of a destroyed autocomplete', () => {
@@ -274,10 +274,10 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       const panel =
-          overlayContainerElement.querySelector('.mat-mdc-autocomplete-panel') as HTMLElement;
+        overlayContainerElement.querySelector('.mat-mdc-autocomplete-panel') as HTMLElement;
 
       expect(panel.classList)
-          .toContain('mat-mdc-autocomplete-visible', `Expected panel to start out visible.`);
+        .toContain('mat-mdc-autocomplete-visible', `Expected panel to start out visible.`);
 
       // Filter down the option list such that no options match the value
       typeInElement(input, 'af');
@@ -286,55 +286,55 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(panel.classList)
-          .toContain('mat-mdc-autocomplete-hidden', `Expected panel to hide itself when empty.`);
+        .toContain('mat-mdc-autocomplete-hidden', `Expected panel to hide itself when empty.`);
     }));
 
     it('should keep the label floating until the panel closes', fakeAsync(() => {
       fixture.componentInstance.trigger.openPanel();
       expect(fixture.componentInstance.formField.floatLabel)
-          .toEqual('always', 'Expected label to float as soon as panel opens.');
+        .toEqual('always', 'Expected label to float as soon as panel opens.');
 
       zone.simulateZoneExit();
       fixture.detectChanges();
 
       const options =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
       options[1].click();
       fixture.detectChanges();
 
       expect(fixture.componentInstance.formField.floatLabel)
-          .toEqual('auto', 'Expected label to return to auto state after panel closes.');
+        .toEqual('auto', 'Expected label to return to auto state after panel closes.');
     }));
 
     it('should not open the panel when the `input` event is invoked on a non-focused input', () => {
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(false, `Expected panel state to start out closed.`);
+        .toBe(false, `Expected panel state to start out closed.`);
 
       input.value = 'Alabama';
       dispatchFakeEvent(input, 'input');
       fixture.detectChanges();
 
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(false, `Expected panel state to stay closed.`);
+        .toBe(false, `Expected panel state to stay closed.`);
     });
 
-   it('should not mess with label placement if set to never', fakeAsync(() => {
+    it('should not mess with label placement if set to never', fakeAsync(() => {
       fixture.componentInstance.floatLabel = 'never';
       fixture.detectChanges();
 
       fixture.componentInstance.trigger.openPanel();
       expect(fixture.componentInstance.formField.floatLabel)
-          .toEqual('never', 'Expected label to stay static.');
+        .toEqual('never', 'Expected label to stay static.');
       flush();
       fixture.detectChanges();
 
       const options =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
       options[1].click();
       fixture.detectChanges();
 
       expect(fixture.componentInstance.formField.floatLabel)
-          .toEqual('never', 'Expected label to stay in static state after close.');
+        .toEqual('never', 'Expected label to stay in static state after close.');
     }));
 
     it('should not mess with label placement if set to always', fakeAsync(() => {
@@ -343,17 +343,17 @@ describe('MDC-based MatAutocomplete', () => {
 
       fixture.componentInstance.trigger.openPanel();
       expect(fixture.componentInstance.formField.floatLabel)
-          .toEqual('always', 'Expected label to stay elevated on open.');
+        .toEqual('always', 'Expected label to stay elevated on open.');
       flush();
       fixture.detectChanges();
 
       const options =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
       options[1].click();
       fixture.detectChanges();
 
       expect(fixture.componentInstance.formField.floatLabel)
-          .toEqual('always', 'Expected label to stay elevated after close.');
+        .toEqual('always', 'Expected label to stay elevated after close.');
     }));
 
     it('should toggle the visibility when typing and closing the panel', fakeAsync(() => {
@@ -362,7 +362,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(overlayContainerElement.querySelector('.mat-mdc-autocomplete-panel')!.classList)
-          .toContain('mat-mdc-autocomplete-visible', 'Expected panel to be visible.');
+        .toContain('mat-mdc-autocomplete-visible', 'Expected panel to be visible.');
 
       typeInElement(input, 'x');
       fixture.detectChanges();
@@ -370,7 +370,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(overlayContainerElement.querySelector('.mat-mdc-autocomplete-panel')!.classList)
-          .toContain('mat-mdc-autocomplete-hidden', 'Expected panel to be hidden.');
+        .toContain('mat-mdc-autocomplete-hidden', 'Expected panel to be hidden.');
 
       fixture.componentInstance.trigger.closePanel();
       fixture.detectChanges();
@@ -385,7 +385,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(overlayContainerElement.querySelector('.mat-mdc-autocomplete-panel')!.classList)
-          .toContain('mat-mdc-autocomplete-visible', 'Expected panel to be visible.');
+        .toContain('mat-mdc-autocomplete-visible', 'Expected panel to be visible.');
     }));
 
     it('should animate the label when the input is focused', () => {
@@ -428,23 +428,23 @@ describe('MDC-based MatAutocomplete', () => {
     });
 
     it('should emit the `opened` event if the options come in after the panel is shown',
-       fakeAsync(() => {
-         fixture.componentInstance.filteredStates = fixture.componentInstance.states = [];
-         fixture.detectChanges();
+      fakeAsync(() => {
+        fixture.componentInstance.filteredStates = fixture.componentInstance.states = [];
+        fixture.detectChanges();
 
-         fixture.componentInstance.trigger.openPanel();
-         fixture.detectChanges();
+        fixture.componentInstance.trigger.openPanel();
+        fixture.detectChanges();
 
-         expect(fixture.componentInstance.openedSpy).not.toHaveBeenCalled();
+        expect(fixture.componentInstance.openedSpy).not.toHaveBeenCalled();
 
-         fixture.componentInstance.filteredStates = fixture.componentInstance.states =
-             [{name: 'California', code: 'CA'}];
-         fixture.detectChanges();
-         tick();
-         fixture.detectChanges();
+        fixture.componentInstance.filteredStates = fixture.componentInstance.states =
+          [{ name: 'California', code: 'CA' }];
+        fixture.detectChanges();
+        tick();
+        fixture.detectChanges();
 
-         expect(fixture.componentInstance.openedSpy).toHaveBeenCalled();
-       }));
+        expect(fixture.componentInstance.openedSpy).toHaveBeenCalled();
+      }));
 
     it('should not emit the opened event multiple times while typing', fakeAsync(() => {
       fixture.componentInstance.trigger.openPanel();
@@ -485,7 +485,7 @@ describe('MDC-based MatAutocomplete', () => {
 
     it('should not be able to open the panel if the autocomplete is disabled', () => {
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(false, `Expected panel state to start out closed.`);
+        .toBe(false, `Expected panel state to start out closed.`);
 
       fixture.componentInstance.autocompleteDisabled = true;
       fixture.detectChanges();
@@ -494,7 +494,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(false, `Expected panel to remain closed.`);
+        .toBe(false, `Expected panel to remain closed.`);
     });
 
     it('should continue to update the model if the autocomplete is disabled', () => {
@@ -519,51 +519,51 @@ describe('MDC-based MatAutocomplete', () => {
   });
 
   it('should not close the panel when clicking on the input', fakeAsync(() => {
-       const fixture = createComponent(SimpleAutocomplete);
-       fixture.detectChanges();
-       const input = fixture.debugElement.query(By.css('input'))!.nativeElement;
+    const fixture = createComponent(SimpleAutocomplete);
+    fixture.detectChanges();
+    const input = fixture.debugElement.query(By.css('input'))!.nativeElement;
 
-       dispatchFakeEvent(input, 'focusin');
-       fixture.detectChanges();
-       zone.simulateZoneExit();
+    dispatchFakeEvent(input, 'focusin');
+    fixture.detectChanges();
+    zone.simulateZoneExit();
 
-       expect(fixture.componentInstance.trigger.panelOpen)
-           .toBe(true, 'Expected panel to be opened on focus.');
+    expect(fixture.componentInstance.trigger.panelOpen)
+      .toBe(true, 'Expected panel to be opened on focus.');
 
-       input.click();
-       fixture.detectChanges();
+    input.click();
+    fixture.detectChanges();
 
-       expect(fixture.componentInstance.trigger.panelOpen)
-           .toBe(true, 'Expected panel to remain opened after clicking on the input.');
-     }));
+    expect(fixture.componentInstance.trigger.panelOpen)
+      .toBe(true, 'Expected panel to remain opened after clicking on the input.');
+  }));
 
   it('should not close the panel when clicking on the input inside shadow DOM', fakeAsync(() => {
-       // This test is only relevant for Shadow DOM-capable browsers.
-       if (!_supportsShadowDom()) {
-         return;
-       }
+    // This test is only relevant for Shadow DOM-capable browsers.
+    if (!_supportsShadowDom()) {
+      return;
+    }
 
-       const fixture = createComponent(SimpleAutocompleteShadowDom);
-       fixture.detectChanges();
-       const input = fixture.debugElement.query(By.css('input'))!.nativeElement;
+    const fixture = createComponent(SimpleAutocompleteShadowDom);
+    fixture.detectChanges();
+    const input = fixture.debugElement.query(By.css('input'))!.nativeElement;
 
-       dispatchFakeEvent(input, 'focusin');
-       fixture.detectChanges();
-       zone.simulateZoneExit();
+    dispatchFakeEvent(input, 'focusin');
+    fixture.detectChanges();
+    zone.simulateZoneExit();
 
-       expect(fixture.componentInstance.trigger.panelOpen)
-           .toBe(true, 'Expected panel to be opened on focus.');
+    expect(fixture.componentInstance.trigger.panelOpen)
+      .toBe(true, 'Expected panel to be opened on focus.');
 
-       input.click();
-       fixture.detectChanges();
+    input.click();
+    fixture.detectChanges();
 
-       expect(fixture.componentInstance.trigger.panelOpen)
-           .toBe(true, 'Expected panel to remain opened after clicking on the input.');
-     }));
+    expect(fixture.componentInstance.trigger.panelOpen)
+      .toBe(true, 'Expected panel to remain opened after clicking on the input.');
+  }));
 
   it('should have the correct text direction in RTL', () => {
     const rtlFixture = createComponent(SimpleAutocomplete, [
-      {provide: Directionality, useFactory: () => ({value: 'rtl', change: EMPTY})},
+      { provide: Directionality, useFactory: () => ({ value: 'rtl', change: EMPTY }) },
     ]);
 
     rtlFixture.detectChanges();
@@ -571,14 +571,14 @@ describe('MDC-based MatAutocomplete', () => {
     rtlFixture.detectChanges();
 
     const boundingBox =
-        overlayContainerElement.querySelector('.cdk-overlay-connected-position-bounding-box')!;
+      overlayContainerElement.querySelector('.cdk-overlay-connected-position-bounding-box')!;
     expect(boundingBox.getAttribute('dir')).toEqual('rtl');
   });
 
   it('should update the panel direction if it changes for the trigger', () => {
-    const dirProvider = {value: 'rtl', change: EMPTY};
+    const dirProvider = { value: 'rtl', change: EMPTY };
     const rtlFixture = createComponent(SimpleAutocomplete, [
-      {provide: Directionality, useFactory: () => dirProvider},
+      { provide: Directionality, useFactory: () => dirProvider },
     ]);
 
     rtlFixture.detectChanges();
@@ -586,7 +586,7 @@ describe('MDC-based MatAutocomplete', () => {
     rtlFixture.detectChanges();
 
     let boundingBox =
-        overlayContainerElement.querySelector('.cdk-overlay-connected-position-bounding-box')!;
+      overlayContainerElement.querySelector('.cdk-overlay-connected-position-bounding-box')!;
     expect(boundingBox.getAttribute('dir')).toEqual('rtl');
 
     rtlFixture.componentInstance.trigger.closePanel();
@@ -597,7 +597,7 @@ describe('MDC-based MatAutocomplete', () => {
     rtlFixture.detectChanges();
 
     boundingBox =
-        overlayContainerElement.querySelector('.cdk-overlay-connected-position-bounding-box')!;
+      overlayContainerElement.querySelector('.cdk-overlay-connected-position-bounding-box')!;
     expect(boundingBox.getAttribute('dir')).toEqual('ltr');
   });
 
@@ -640,13 +640,13 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(fixture.componentInstance.stateCtrl.value)
-          .toEqual('a', 'Expected control value to be updated as user types.');
+        .toEqual('a', 'Expected control value to be updated as user types.');
 
       typeInElement(input, 'l');
       fixture.detectChanges();
 
       expect(fixture.componentInstance.stateCtrl.value)
-          .toEqual('al', 'Expected control value to be updated as user types.');
+        .toEqual('al', 'Expected control value to be updated as user types.');
     });
 
     it('should update control value when autofilling', () => {
@@ -658,7 +658,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(fixture.componentInstance.stateCtrl.value)
-          .toBe('Alabama', 'Expected value to be propagated to the form control.');
+        .toBe('Alabama', 'Expected value to be propagated to the form control.');
     });
 
     it('should update control value when option is selected with option value', fakeAsync(() => {
@@ -667,13 +667,13 @@ describe('MDC-based MatAutocomplete', () => {
       zone.simulateZoneExit();
 
       const options =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
       options[1].click();
       fixture.detectChanges();
 
       expect(fixture.componentInstance.stateCtrl.value)
-          .toEqual({code: 'CA', name: 'California'},
-              'Expected control value to equal the selected option value.');
+        .toEqual({ code: 'CA', name: 'California' },
+          'Expected control value to equal the selected option value.');
     }));
 
     it('should update the control back to a string if user types after an option is selected',
@@ -683,7 +683,7 @@ describe('MDC-based MatAutocomplete', () => {
         zone.simulateZoneExit();
 
         const options =
-            overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
         options[1].click();
         fixture.detectChanges();
 
@@ -693,7 +693,7 @@ describe('MDC-based MatAutocomplete', () => {
         tick();
 
         expect(fixture.componentInstance.stateCtrl.value)
-            .toEqual('Californi', 'Expected control value to revert back to string.');
+          .toEqual('Californi', 'Expected control value to revert back to string.');
       }));
 
     it('should fill the text field with display value when an option is selected', fakeAsync(() => {
@@ -702,12 +702,12 @@ describe('MDC-based MatAutocomplete', () => {
       zone.simulateZoneExit();
 
       const options =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
       options[1].click();
       fixture.detectChanges();
 
       expect(input.value)
-          .toContain('California', `Expected text field to fill with selected value.`);
+        .toContain('California', `Expected text field to fill with selected value.`);
     }));
 
     it('should fill the text field with value if displayWith is not set', fakeAsync(() => {
@@ -720,23 +720,23 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       const options =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
       options[1].click();
 
       fixture.detectChanges();
       expect(input.value)
-          .toContain('test value', `Expected input to fall back to selected option's value.`);
+        .toContain('test value', `Expected input to fall back to selected option's value.`);
     }));
 
     it('should fill the text field correctly if value is set to obj programmatically',
       fakeAsync(() => {
-        fixture.componentInstance.stateCtrl.setValue({code: 'AL', name: 'Alabama'});
+        fixture.componentInstance.stateCtrl.setValue({ code: 'AL', name: 'Alabama' });
         fixture.detectChanges();
         tick();
         fixture.detectChanges();
 
         expect(input.value)
-            .toContain('Alabama', `Expected input to fill with matching option's viewValue.`);
+          .toContain('Alabama', `Expected input to fill with matching option's viewValue.`);
       }));
 
     it('should clear the text field if value is reset programmatically', fakeAsync(() => {
@@ -755,72 +755,72 @@ describe('MDC-based MatAutocomplete', () => {
 
     it('should disable input in view when disabled programmatically', () => {
       const formFieldElement =
-          fixture.debugElement.query(By.css('.mat-mdc-form-field'))!.nativeElement;
+        fixture.debugElement.query(By.css('.mat-mdc-form-field'))!.nativeElement;
 
       expect(input.disabled)
-          .toBe(false, `Expected input to start out enabled in view.`);
+        .toBe(false, `Expected input to start out enabled in view.`);
       expect(formFieldElement.classList.contains('mat-form-field-disabled'))
-          .toBe(false, `Expected input underline to start out with normal styles.`);
+        .toBe(false, `Expected input underline to start out with normal styles.`);
 
       fixture.componentInstance.stateCtrl.disable();
       fixture.detectChanges();
 
       expect(input.disabled)
-          .toBe(true, `Expected input to be disabled in view when disabled programmatically.`);
+        .toBe(true, `Expected input to be disabled in view when disabled programmatically.`);
       expect(formFieldElement.classList.contains('mat-form-field-disabled'))
-          .toBe(true, `Expected input underline to display disabled styles.`);
+        .toBe(true, `Expected input underline to display disabled styles.`);
     });
 
     it('should mark the autocomplete control as dirty as user types', () => {
       expect(fixture.componentInstance.stateCtrl.dirty)
-          .toBe(false, `Expected control to start out pristine.`);
+        .toBe(false, `Expected control to start out pristine.`);
 
       typeInElement(input, 'a');
       fixture.detectChanges();
 
       expect(fixture.componentInstance.stateCtrl.dirty)
-          .toBe(true, `Expected control to become dirty when the user types into the input.`);
+        .toBe(true, `Expected control to become dirty when the user types into the input.`);
     });
 
     it('should mark the autocomplete control as dirty when an option is selected', fakeAsync(() => {
       expect(fixture.componentInstance.stateCtrl.dirty)
-          .toBe(false, `Expected control to start out pristine.`);
+        .toBe(false, `Expected control to start out pristine.`);
 
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
       zone.simulateZoneExit();
 
       const options =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
       options[1].click();
       fixture.detectChanges();
 
       expect(fixture.componentInstance.stateCtrl.dirty)
-          .toBe(true, `Expected control to become dirty when an option was selected.`);
+        .toBe(true, `Expected control to become dirty when an option was selected.`);
     }));
 
     it('should not mark the control dirty when the value is set programmatically', () => {
       expect(fixture.componentInstance.stateCtrl.dirty)
-          .toBe(false, `Expected control to start out pristine.`);
+        .toBe(false, `Expected control to start out pristine.`);
 
       fixture.componentInstance.stateCtrl.setValue('AL');
       fixture.detectChanges();
 
       expect(fixture.componentInstance.stateCtrl.dirty)
-          .toBe(false, `Expected control to stay pristine if value is set programmatically.`);
+        .toBe(false, `Expected control to stay pristine if value is set programmatically.`);
     });
 
     it('should mark the autocomplete control as touched on blur', () => {
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
       expect(fixture.componentInstance.stateCtrl.touched)
-          .toBe(false, `Expected control to start out untouched.`);
+        .toBe(false, `Expected control to start out untouched.`);
 
       dispatchFakeEvent(input, 'blur');
       fixture.detectChanges();
 
       expect(fixture.componentInstance.stateCtrl.touched)
-          .toBe(true, `Expected control to become touched on blur.`);
+        .toBe(true, `Expected control to become touched on blur.`);
     });
 
     it('should disable the input when used with a value accessor and without `matInput`', () => {
@@ -874,26 +874,26 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.componentInstance.trigger._handleKeydown(DOWN_ARROW_EVENT);
 
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(true, `Expected panel state to stay open when DOWN key is pressed.`);
+        .toBe(true, `Expected panel state to stay open when DOWN key is pressed.`);
       expect(overlayContainerElement.textContent)
-          .toContain('Alabama', `Expected panel to keep displaying when DOWN key is pressed.`);
+        .toContain('Alabama', `Expected panel to keep displaying when DOWN key is pressed.`);
       expect(overlayContainerElement.textContent)
-          .toContain('California', `Expected panel to keep displaying when DOWN key is pressed.`);
+        .toContain('California', `Expected panel to keep displaying when DOWN key is pressed.`);
     });
 
     it('should set the active item to the first option when DOWN key is pressed', () => {
       const componentInstance = fixture.componentInstance;
       const optionEls =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
 
       expect(componentInstance.trigger.panelOpen)
-          .toBe(true, 'Expected first down press to open the pane.');
+        .toBe(true, 'Expected first down press to open the pane.');
 
       componentInstance.trigger._handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
 
       expect(componentInstance.trigger.activeOption === componentInstance.options.first)
-          .toBe(true, 'Expected first option to be active.');
+        .toBe(true, 'Expected first option to be active.');
       expect(optionEls[0].classList).toContain('mat-mdc-option-active');
       expect(optionEls[1].classList).not.toContain('mat-mdc-option-active');
 
@@ -901,7 +901,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(componentInstance.trigger.activeOption === componentInstance.options.toArray()[1])
-          .toBe(true, 'Expected second option to be active.');
+        .toBe(true, 'Expected second option to be active.');
       expect(optionEls[0].classList).not.toContain('mat-mdc-option-active');
       expect(optionEls[1].classList).toContain('mat-mdc-option-active');
     });
@@ -909,16 +909,16 @@ describe('MDC-based MatAutocomplete', () => {
     it('should set the active item to the last option when UP key is pressed', () => {
       const componentInstance = fixture.componentInstance;
       const optionEls =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
 
       expect(componentInstance.trigger.panelOpen)
-          .toBe(true, 'Expected first up press to open the pane.');
+        .toBe(true, 'Expected first up press to open the pane.');
 
       componentInstance.trigger._handleKeydown(UP_ARROW_EVENT);
       fixture.detectChanges();
 
       expect(componentInstance.trigger.activeOption === componentInstance.options.last)
-          .toBe(true, 'Expected last option to be active.');
+        .toBe(true, 'Expected last option to be active.');
       expect(optionEls[10].classList).toContain('mat-mdc-option-active');
       expect(optionEls[0].classList).not.toContain('mat-mdc-option-active');
 
@@ -926,7 +926,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(componentInstance.trigger.activeOption === componentInstance.options.first)
-          .toBe(true, 'Expected first option to be active.');
+        .toBe(true, 'Expected first option to be active.');
       expect(optionEls[0].classList).toContain('mat-mdc-option-active');
     });
 
@@ -948,10 +948,10 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       const optionEls =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
 
       expect(componentInstance.trigger.activeOption === componentInstance.options.first)
-          .toBe(true, 'Expected first option to be active.');
+        .toBe(true, 'Expected first option to be active.');
       expect(optionEls[0].classList).toContain('mat-mdc-option-active');
       expect(optionEls[1].classList).not.toContain('mat-mdc-option-active');
     });
@@ -964,7 +964,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.componentInstance.trigger._handleKeydown(ENTER_EVENT);
       fixture.detectChanges();
       expect(input.value)
-          .toContain('Alabama', `Expected text field to fill with selected value on ENTER.`);
+        .toContain('Alabama', `Expected text field to fill with selected value on ENTER.`);
     }));
 
     it('should prevent the default enter key action', fakeAsync(() => {
@@ -974,7 +974,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.componentInstance.trigger._handleKeydown(ENTER_EVENT);
 
       expect(ENTER_EVENT.defaultPrevented)
-          .toBe(true, 'Expected the default action to have been prevented.');
+        .toBe(true, 'Expected the default action to have been prevented.');
     }));
 
     it('should not prevent the default enter action for a closed panel after a user action', () => {
@@ -1004,7 +1004,7 @@ describe('MDC-based MatAutocomplete', () => {
 
     it('should mark the control dirty when selecting an option from the keyboard', fakeAsync(() => {
       expect(fixture.componentInstance.stateCtrl.dirty)
-          .toBe(false, `Expected control to start out pristine.`);
+        .toBe(false, `Expected control to start out pristine.`);
 
       fixture.componentInstance.trigger._handleKeydown(DOWN_ARROW_EVENT);
       flush();
@@ -1012,7 +1012,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(fixture.componentInstance.stateCtrl.dirty)
-          .toBe(true, `Expected control to become dirty when option was selected by ENTER.`);
+        .toBe(true, `Expected control to become dirty when option was selected by ENTER.`);
     }));
 
     it('should open the panel again when typing after making a selection', fakeAsync(() => {
@@ -1022,9 +1022,9 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(false, `Expected panel state to read closed after ENTER key.`);
+        .toBe(false, `Expected panel state to read closed after ENTER key.`);
       expect(overlayContainerElement.textContent)
-          .toEqual('', `Expected panel to close after ENTER key.`);
+        .toEqual('', `Expected panel to close after ENTER key.`);
 
       dispatchFakeEvent(input, 'focusin');
       clearElement(input);
@@ -1033,9 +1033,9 @@ describe('MDC-based MatAutocomplete', () => {
       tick();
 
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(true, `Expected panel state to read open when typing in input.`);
+        .toBe(true, `Expected panel state to read open when typing in input.`);
       expect(overlayContainerElement.textContent)
-          .toContain('Alabama', `Expected panel to display when typing in input.`);
+        .toContain('Alabama', `Expected panel to display when typing in input.`);
     }));
 
     it('should not open the panel if the `input` event was dispatched with changing the value',
@@ -1066,7 +1066,7 @@ describe('MDC-based MatAutocomplete', () => {
     it('should scroll to active options below the fold', () => {
       const trigger = fixture.componentInstance.trigger;
       const scrollContainer =
-          document.querySelector('.cdk-overlay-pane .mat-mdc-autocomplete-panel')!;
+        document.querySelector('.cdk-overlay-pane .mat-mdc-autocomplete-panel')!;
 
       trigger._handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
@@ -1077,7 +1077,7 @@ describe('MDC-based MatAutocomplete', () => {
 
       // Expect option bottom minus the panel height plus padding (288 - 256 + 8 = 40)
       expect(scrollContainer.scrollTop)
-          .toEqual(40, `Expected panel to reveal the sixth option.`);
+        .toEqual(40, `Expected panel to reveal the sixth option.`);
     });
 
     it('should scroll to active options below if the option height is variable', () => {
@@ -1091,7 +1091,7 @@ describe('MDC-based MatAutocomplete', () => {
 
       const trigger = fixture.componentInstance.trigger;
       const scrollContainer =
-          document.querySelector('.cdk-overlay-pane .mat-mdc-autocomplete-panel')!;
+        document.querySelector('.cdk-overlay-pane .mat-mdc-autocomplete-panel')!;
 
       trigger._handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
@@ -1102,12 +1102,12 @@ describe('MDC-based MatAutocomplete', () => {
 
       // Expect option bottom minus the panel height (336 - 256 + 8 = 88)
       expect(scrollContainer.scrollTop)
-          .toEqual(88, `Expected panel to reveal the sixth option.`);
+        .toEqual(88, `Expected panel to reveal the sixth option.`);
     });
 
     it('should scroll to active options on UP arrow', () => {
       const scrollContainer =
-          document.querySelector('.cdk-overlay-pane .mat-mdc-autocomplete-panel')!;
+        document.querySelector('.cdk-overlay-pane .mat-mdc-autocomplete-panel')!;
 
       fixture.componentInstance.trigger._handleKeydown(UP_ARROW_EVENT);
       fixture.detectChanges();
@@ -1119,7 +1119,7 @@ describe('MDC-based MatAutocomplete', () => {
     it('should not scroll to active options that are fully in the panel', () => {
       const trigger = fixture.componentInstance.trigger;
       const scrollContainer =
-          document.querySelector('.cdk-overlay-pane .mat-mdc-autocomplete-panel')!;
+        document.querySelector('.cdk-overlay-pane .mat-mdc-autocomplete-panel')!;
 
       trigger._handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
@@ -1131,20 +1131,20 @@ describe('MDC-based MatAutocomplete', () => {
 
       // Expect option bottom minus the panel height plus the padding (288 - 256 + 8 = 40)
       expect(scrollContainer.scrollTop)
-          .toEqual(40, `Expected panel to reveal the sixth option.`);
+        .toEqual(40, `Expected panel to reveal the sixth option.`);
 
       // These up arrows will set the 2nd option active
       [4, 3, 2, 1].forEach(() => trigger._handleKeydown(UP_ARROW_EVENT));
 
       // Expect no scrolling to have occurred. Still showing bottom of 6th option.
       expect(scrollContainer.scrollTop)
-          .toEqual(40, `Expected panel not to scroll up since sixth option still fully visible.`);
+        .toEqual(40, `Expected panel not to scroll up since sixth option still fully visible.`);
     });
 
     it('should scroll to active options that are above the panel', () => {
       const trigger = fixture.componentInstance.trigger;
       const scrollContainer =
-          document.querySelector('.cdk-overlay-pane .mat-mdc-autocomplete-panel')!;
+        document.querySelector('.cdk-overlay-pane .mat-mdc-autocomplete-panel')!;
 
       trigger._handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
@@ -1159,7 +1159,7 @@ describe('MDC-based MatAutocomplete', () => {
 
       // Expect to show the top of the 2nd option at the top of the panel
       expect(scrollContainer.scrollTop)
-          .toEqual(56, `Expected panel to scroll up when option is above panel.`);
+        .toEqual(56, `Expected panel to scroll up when option is above panel.`);
     });
 
     it('should close the panel when pressing escape', fakeAsync(() => {
@@ -1196,7 +1196,7 @@ describe('MDC-based MatAutocomplete', () => {
       expect(document.activeElement).toBe(input, 'Expected input to be focused.');
       expect(trigger.panelOpen).toBe(true, 'Expected panel to be open.');
 
-      const event = dispatchKeyboardEvent(document.body, 'keydown', ESCAPE, undefined, {alt: true});
+      const event = dispatchKeyboardEvent(document.body, 'keydown', ESCAPE, undefined, { alt: true });
       fixture.detectChanges();
 
       expect(document.activeElement).toBe(input, 'Expected input to continue to be focused.');
@@ -1206,7 +1206,7 @@ describe('MDC-based MatAutocomplete', () => {
 
     it('should close the panel when pressing ALT + UP_ARROW', fakeAsync(() => {
       const trigger = fixture.componentInstance.trigger;
-      const upArrowEvent = createKeyboardEvent('keydown', UP_ARROW, undefined, {alt: true});
+      const upArrowEvent = createKeyboardEvent('keydown', UP_ARROW, undefined, { alt: true });
       spyOn(upArrowEvent, 'stopPropagation').and.callThrough();
 
       input.focus();
@@ -1232,13 +1232,13 @@ describe('MDC-based MatAutocomplete', () => {
       flush();
 
       expect(overlayContainerElement.querySelector('.mat-mdc-autocomplete-panel'))
-          .toBeTruthy('Expected panel to be rendered.');
+        .toBeTruthy('Expected panel to be rendered.');
 
       dispatchKeyboardEvent(input, 'keydown', TAB);
       fixture.detectChanges();
 
       expect(overlayContainerElement.querySelector('.mat-mdc-autocomplete-panel'))
-          .toBeFalsy('Expected panel to be removed.');
+        .toBeFalsy('Expected panel to be removed.');
     }));
 
     it('should reset the active option when closing with the escape key', fakeAsync(() => {
@@ -1330,7 +1330,7 @@ describe('MDC-based MatAutocomplete', () => {
       // <option bottom> - <panel height> + <2x group labels> + panel padding = 136
       // 288 - 256 + 96 + 8 = 128
       expect(container.scrollTop)
-          .toBe(136, 'Expected panel to reveal the sixth option.');
+        .toBe(136, 'Expected panel to reveal the sixth option.');
     }));
 
     it('should scroll to active options on UP arrow', fakeAsync(() => {
@@ -1382,7 +1382,7 @@ describe('MDC-based MatAutocomplete', () => {
       // Expect to show the top of the 2nd option at the top of the panel.
       // It is offset by 56, because there's a group label above it plus the panel padding.
       expect(container.scrollTop)
-          .toBe(104, 'Expected panel to scroll up when option is above panel.');
+        .toBe(104, 'Expected panel to scroll up when option is above panel.');
     }));
 
     it('should scroll back to the top when reaching the first option with preceding group label',
@@ -1416,32 +1416,32 @@ describe('MDC-based MatAutocomplete', () => {
         expect(container.scrollTop).toBe(0, 'Expected panel to be scrolled to the top.');
       }));
 
-      it('should scroll to active option when group is indirect descendant', fakeAsync(() => {
-        const fixture = createComponent(AutocompleteWithIndirectGroups);
-        fixture.detectChanges();
+    it('should scroll to active option when group is indirect descendant', fakeAsync(() => {
+      const fixture = createComponent(AutocompleteWithIndirectGroups);
+      fixture.detectChanges();
 
-        fixture.componentInstance.trigger.openPanel();
-        fixture.detectChanges();
-        zone.simulateZoneExit();
-        fixture.detectChanges();
-        const container = document.querySelector('.mat-mdc-autocomplete-panel') as HTMLElement;
+      fixture.componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+      zone.simulateZoneExit();
+      fixture.detectChanges();
+      const container = document.querySelector('.mat-mdc-autocomplete-panel') as HTMLElement;
 
+      fixture.componentInstance.trigger._handleKeydown(DOWN_ARROW_EVENT);
+      tick();
+      fixture.detectChanges();
+      expect(container.scrollTop).toBe(0, 'Expected the panel not to scroll.');
+
+      // Press the down arrow five times.
+      [1, 2, 3, 4, 5].forEach(() => {
         fixture.componentInstance.trigger._handleKeydown(DOWN_ARROW_EVENT);
         tick();
-        fixture.detectChanges();
-        expect(container.scrollTop).toBe(0, 'Expected the panel not to scroll.');
+      });
 
-        // Press the down arrow five times.
-        [1, 2, 3, 4, 5].forEach(() => {
-          fixture.componentInstance.trigger._handleKeydown(DOWN_ARROW_EVENT);
-          tick();
-        });
-
-        // <option bottom> - <panel height> + <2x group labels> + panel padding = 128
-        // 288 - 256 + 96 + 8 = 136
-        expect(container.scrollTop)
-            .toBe(136, 'Expected panel to reveal the sixth option.');
-      }));
+      // <option bottom> - <panel height> + <2x group labels> + panel padding = 128
+      // 288 - 256 + 96 + 8 = 136
+      expect(container.scrollTop)
+        .toBe(136, 'Expected panel to reveal the sixth option.');
+    }));
   });
 
   describe('aria', () => {
@@ -1457,7 +1457,7 @@ describe('MDC-based MatAutocomplete', () => {
 
     it('should set role of input to combobox', () => {
       expect(input.getAttribute('role'))
-          .toEqual('combobox', 'Expected role of input to be combobox.');
+        .toEqual('combobox', 'Expected role of input to be combobox.');
     });
 
     it('should set role of autocomplete panel to listbox', () => {
@@ -1465,15 +1465,61 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       const panel =
-          fixture.debugElement.query(By.css('.mat-mdc-autocomplete-panel'))!.nativeElement;
+        fixture.debugElement.query(By.css('.mat-mdc-autocomplete-panel'))!.nativeElement;
 
       expect(panel.getAttribute('role'))
-          .toEqual('listbox', 'Expected role of the panel to be listbox.');
+        .toEqual('listbox', 'Expected role of the panel to be listbox.');
+    });
+
+    it('should point the aria-labelledby of the panel to the field label', () => {
+      fixture.componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+
+      const panel =
+        fixture.debugElement.query(By.css('.mat-mdc-autocomplete-panel'))!.nativeElement;
+      const labelId = fixture.nativeElement.querySelector('label').id;
+      expect(panel.getAttribute('aria-labelledby')).toBe(labelId);
+      expect(panel.hasAttribute('aria-label')).toBe(false);
+    });
+
+    it('should add a custom aria-labelledby to the panel', () => {
+      fixture.componentInstance.ariaLabelledby = 'myLabelId';
+      fixture.componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+
+      const panel =
+        fixture.debugElement.query(By.css('.mat-mdc-autocomplete-panel'))!.nativeElement;
+      const labelId = fixture.nativeElement.querySelector('label').id;
+      expect(panel.getAttribute('aria-labelledby')).toBe(`${labelId} myLabelId`);
+      expect(panel.hasAttribute('aria-label')).toBe(false);
+    });
+
+    it('should clear aria-labelledby from the panel if an aria-label is set', () => {
+      fixture.componentInstance.ariaLabel = 'My label';
+      fixture.componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+
+      const panel =
+        fixture.debugElement.query(By.css('.mat-mdc-autocomplete-panel'))!.nativeElement;
+      expect(panel.getAttribute('aria-label')).toBe('My label');
+      expect(panel.hasAttribute('aria-labelledby')).toBe(false);
+    });
+
+    it('should support setting a custom aria-label', () => {
+      fixture.componentInstance.ariaLabel = 'Custom Label';
+      fixture.componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+
+      const panel =
+        fixture.debugElement.query(By.css('.mat-mdc-autocomplete-panel'))!.nativeElement;
+
+      expect(panel.getAttribute('aria-label')).toEqual('Custom Label');
+      expect(panel.hasAttribute('aria-labelledby')).toBe(false);
     });
 
     it('should set aria-autocomplete to list', () => {
       expect(input.getAttribute('aria-autocomplete'))
-          .toEqual('list', 'Expected aria-autocomplete attribute to equal list.');
+        .toEqual('list', 'Expected aria-autocomplete attribute to equal list.');
     });
 
     it('should set aria-activedescendant based on the active option', fakeAsync(() => {
@@ -1481,7 +1527,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(input.hasAttribute('aria-activedescendant'))
-          .toBe(false, 'Expected aria-activedescendant to be absent if no active item.');
+        .toBe(false, 'Expected aria-activedescendant to be absent if no active item.');
 
       const DOWN_ARROW_EVENT = createKeyboardEvent('keydown', DOWN_ARROW);
 
@@ -1490,40 +1536,40 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(input.getAttribute('aria-activedescendant'))
-          .toEqual(fixture.componentInstance.options.first.id,
-              'Expected aria-activedescendant to match the active item after 1 down arrow.');
+        .toEqual(fixture.componentInstance.options.first.id,
+          'Expected aria-activedescendant to match the active item after 1 down arrow.');
 
       fixture.componentInstance.trigger._handleKeydown(DOWN_ARROW_EVENT);
       tick();
       fixture.detectChanges();
 
       expect(input.getAttribute('aria-activedescendant'))
-          .toEqual(fixture.componentInstance.options.toArray()[1].id,
-              'Expected aria-activedescendant to match the active item after 2 down arrows.');
+        .toEqual(fixture.componentInstance.options.toArray()[1].id,
+          'Expected aria-activedescendant to match the active item after 2 down arrows.');
     }));
 
     it('should set aria-expanded based on whether the panel is open', () => {
       expect(input.getAttribute('aria-expanded'))
-          .toBe('false', 'Expected aria-expanded to be false while panel is closed.');
+        .toBe('false', 'Expected aria-expanded to be false while panel is closed.');
 
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
 
       expect(input.getAttribute('aria-expanded'))
-          .toBe('true', 'Expected aria-expanded to be true while panel is open.');
+        .toBe('true', 'Expected aria-expanded to be true while panel is open.');
 
       fixture.componentInstance.trigger.closePanel();
       fixture.detectChanges();
 
       expect(input.getAttribute('aria-expanded'))
-          .toBe('false', 'Expected aria-expanded to be false when panel closes again.');
+        .toBe('false', 'Expected aria-expanded to be false when panel closes again.');
     });
 
     it('should set aria-expanded properly when the panel is hidden', fakeAsync(() => {
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
       expect(input.getAttribute('aria-expanded'))
-          .toBe('true', 'Expected aria-expanded to be true while panel is open.');
+        .toBe('true', 'Expected aria-expanded to be true while panel is open.');
 
       typeInElement(input, 'zz');
       fixture.detectChanges();
@@ -1531,7 +1577,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(input.getAttribute('aria-expanded'))
-          .toBe('false', 'Expected aria-expanded to be false when panel hides itself.');
+        .toBe('false', 'Expected aria-expanded to be false when panel hides itself.');
     }));
 
     it('should set aria-owns based on the attached autocomplete', () => {
@@ -1539,10 +1585,10 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       const panel =
-          fixture.debugElement.query(By.css('.mat-mdc-autocomplete-panel'))!.nativeElement;
+        fixture.debugElement.query(By.css('.mat-mdc-autocomplete-panel'))!.nativeElement;
 
       expect(input.getAttribute('aria-owns'))
-          .toBe(panel.getAttribute('id'), 'Expected aria-owns to match attached autocomplete.');
+        .toBe(panel.getAttribute('id'), 'Expected aria-owns to match attached autocomplete.');
     });
 
     it('should not set aria-owns while the autocomplete is closed', () => {
@@ -1586,7 +1632,7 @@ describe('MDC-based MatAutocomplete', () => {
       let fixture = createComponent(SimpleAutocomplete);
       fixture.detectChanges();
       let inputReference =
-          fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
+        fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
 
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
@@ -1598,7 +1644,7 @@ describe('MDC-based MatAutocomplete', () => {
       const panelTop = panel.getBoundingClientRect().top;
 
       expect(Math.floor(inputBottom))
-          .toEqual(Math.floor(panelTop), `Expected panel top to match input bottom by default.`);
+        .toEqual(Math.floor(panelTop), `Expected panel top to match input bottom by default.`);
       expect(panel.classList).not.toContain('mat-mdc-autocomplete-panel-above');
     }));
 
@@ -1607,13 +1653,13 @@ describe('MDC-based MatAutocomplete', () => {
       let spacer = document.createElement('div');
       let fixture = createComponent(SimpleAutocomplete, [{
         provide: ScrollDispatcher,
-        useValue: {scrolled: () => scrolledSubject}
+        useValue: { scrolled: () => scrolledSubject }
       }]);
 
       fixture.detectChanges();
 
       let inputReference =
-          fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
+        fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
       spacer.style.height = '1000px';
       document.body.appendChild(spacer);
 
@@ -1629,7 +1675,7 @@ describe('MDC-based MatAutocomplete', () => {
       const panelTop = panel.getBoundingClientRect().top;
 
       expect(Math.floor(inputBottom)).toEqual(Math.floor(panelTop),
-          'Expected panel top to match input bottom after scrolling.');
+        'Expected panel top to match input bottom after scrolling.');
 
       document.body.removeChild(spacer);
       window.scroll(0, 0);
@@ -1639,7 +1685,7 @@ describe('MDC-based MatAutocomplete', () => {
       let fixture = createComponent(SimpleAutocomplete);
       fixture.detectChanges();
       let inputReference =
-          fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
+        fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
 
       // Push the autocomplete trigger down so it won't have room to open "below"
       inputReference.style.bottom = '0';
@@ -1655,7 +1701,7 @@ describe('MDC-based MatAutocomplete', () => {
       const panelBottom = panel.getBoundingClientRect().bottom;
 
       expect(Math.floor(inputTop))
-          .toEqual(Math.floor(panelBottom), `Expected panel to fall back to above position.`);
+        .toEqual(Math.floor(panelBottom), `Expected panel to fall back to above position.`);
 
       expect(panel.classList).toContain('mat-mdc-autocomplete-panel-above');
     }));
@@ -1666,7 +1712,7 @@ describe('MDC-based MatAutocomplete', () => {
 
       let inputEl = fixture.debugElement.query(By.css('input'))!.nativeElement;
       let inputReference =
-          fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
+        fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
 
       // Push the element down so it has a little bit of space, but not enough to render.
       inputReference.style.bottom = '10px';
@@ -1708,7 +1754,7 @@ describe('MDC-based MatAutocomplete', () => {
 
       let input = fixture.debugElement.query(By.css('input'))!.nativeElement;
       let inputReference =
-          fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
+        fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
 
       // Push the autocomplete trigger down so it won't have room to open "below"
       inputReference.style.bottom = '0';
@@ -1727,59 +1773,59 @@ describe('MDC-based MatAutocomplete', () => {
       const panelBottom = panel.getBoundingClientRect().bottom;
 
       expect(Math.floor(inputTop))
-          .toEqual(Math.floor(panelBottom), `Expected panel to stay aligned after filtering.`);
+        .toEqual(Math.floor(panelBottom), `Expected panel to stay aligned after filtering.`);
     }));
 
     it('should fall back to above position when requested if options are added while ' +
-        'the panel is open', fakeAsync(() => {
-      let fixture = createComponent(SimpleAutocomplete);
-      fixture.componentInstance.states = fixture.componentInstance.states.slice(0, 1);
-      fixture.componentInstance.filteredStates = fixture.componentInstance.states.slice();
-      fixture.detectChanges();
+      'the panel is open', fakeAsync(() => {
+        let fixture = createComponent(SimpleAutocomplete);
+        fixture.componentInstance.states = fixture.componentInstance.states.slice(0, 1);
+        fixture.componentInstance.filteredStates = fixture.componentInstance.states.slice();
+        fixture.detectChanges();
 
-      let inputEl = fixture.debugElement.query(By.css('input'))!.nativeElement;
-      let inputReference =
+        let inputEl = fixture.debugElement.query(By.css('input'))!.nativeElement;
+        let inputReference =
           fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
 
-      // Push the element down so it has a little bit of space, but not enough to render.
-      inputReference.style.bottom = '75px';
-      inputReference.style.position = 'fixed';
+        // Push the element down so it has a little bit of space, but not enough to render.
+        inputReference.style.bottom = '75px';
+        inputReference.style.position = 'fixed';
 
-      dispatchFakeEvent(inputEl, 'focusin');
-      fixture.detectChanges();
-      zone.simulateZoneExit();
-      fixture.detectChanges();
-
-      let panel = overlayContainerElement.querySelector('.mat-mdc-autocomplete-panel')!;
-      let inputRect = inputReference.getBoundingClientRect();
-      let panelRect = panel.getBoundingClientRect();
-
-      expect(Math.floor(panelRect.top))
-        .toBe(Math.floor(inputRect.bottom),
-          `Expected panel top to be below input before repositioning.`);
-
-      for (let i = 0; i < 20; i++) {
-        fixture.componentInstance.filteredStates.push({code: 'FK', name: 'Fake State'});
+        dispatchFakeEvent(inputEl, 'focusin');
         fixture.detectChanges();
-      }
+        zone.simulateZoneExit();
+        fixture.detectChanges();
 
-      // Request a position update now that there are too many suggestions to fit in the viewport.
-      fixture.componentInstance.trigger.updatePosition();
+        let panel = overlayContainerElement.querySelector('.mat-mdc-autocomplete-panel')!;
+        let inputRect = inputReference.getBoundingClientRect();
+        let panelRect = panel.getBoundingClientRect();
 
-      inputRect = inputReference.getBoundingClientRect();
-      panelRect = panel.getBoundingClientRect();
+        expect(Math.floor(panelRect.top))
+          .toBe(Math.floor(inputRect.bottom),
+            `Expected panel top to be below input before repositioning.`);
 
-      expect(Math.floor(panelRect.bottom))
-        .toBe(Math.floor(inputRect.top),
-          `Expected panel to fall back to above position after repositioning.`);
-      tick();
-    }));
+        for (let i = 0; i < 20; i++) {
+          fixture.componentInstance.filteredStates.push({ code: 'FK', name: 'Fake State' });
+          fixture.detectChanges();
+        }
+
+        // Request a position update now that there are too many suggestions to fit in the viewport.
+        fixture.componentInstance.trigger.updatePosition();
+
+        inputRect = inputReference.getBoundingClientRect();
+        panelRect = panel.getBoundingClientRect();
+
+        expect(Math.floor(panelRect.bottom))
+          .toBe(Math.floor(inputRect.top),
+            `Expected panel to fall back to above position after repositioning.`);
+        tick();
+      }));
 
     it('should not throw if a panel reposition is requested while the panel is closed', () => {
-        let fixture = createComponent(SimpleAutocomplete);
-        fixture.detectChanges();
+      let fixture = createComponent(SimpleAutocomplete);
+      fixture.detectChanges();
 
-        expect(() => fixture.componentInstance.trigger.updatePosition()).not.toThrow();
+      expect(() => fixture.componentInstance.trigger.updatePosition()).not.toThrow();
     });
 
     it('should be able to force below position even if there is not enough space', fakeAsync(() => {
@@ -1787,7 +1833,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.componentInstance.position = 'below';
       fixture.detectChanges();
       let inputReference =
-          fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
+        fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
 
       // Push the autocomplete trigger down so it won't have room to open below.
       inputReference.style.bottom = '0';
@@ -1803,7 +1849,7 @@ describe('MDC-based MatAutocomplete', () => {
       const panelTop = panel.getBoundingClientRect().top;
 
       expect(Math.floor(inputBottom))
-          .toEqual(Math.floor(panelTop), 'Expected panel to be below the input.');
+        .toEqual(Math.floor(panelTop), 'Expected panel to be below the input.');
 
       expect(panel.classList).not.toContain('mat-mdc-autocomplete-panel-above');
     }));
@@ -1813,7 +1859,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.componentInstance.position = 'above';
       fixture.detectChanges();
       let inputReference =
-          fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
+        fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
 
       // Push the autocomplete trigger up so it won't have room to open above.
       inputReference.style.top = '0';
@@ -1829,7 +1875,7 @@ describe('MDC-based MatAutocomplete', () => {
       const panelBottom = panel.getBoundingClientRect().bottom;
 
       expect(Math.floor(inputTop))
-          .toEqual(Math.floor(panelBottom), 'Expected panel to be above the input.');
+        .toEqual(Math.floor(panelBottom), 'Expected panel to be above the input.');
 
       expect(panel.classList).toContain('mat-mdc-autocomplete-panel-above');
     }));
@@ -1838,7 +1884,7 @@ describe('MDC-based MatAutocomplete', () => {
       let fixture = createComponent(SimpleAutocomplete);
       fixture.detectChanges();
       let inputReference =
-          fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
+        fixture.debugElement.query(By.css('.mdc-text-field'))!.nativeElement;
       let openPanel = () => {
         fixture.componentInstance.trigger.openPanel();
         fixture.detectChanges();
@@ -1856,7 +1902,7 @@ describe('MDC-based MatAutocomplete', () => {
       let panelRect = panel.getBoundingClientRect();
 
       expect(Math.floor(inputRect.top))
-          .toEqual(Math.floor(panelRect.bottom), 'Expected panel to be above the input.');
+        .toEqual(Math.floor(panelRect.bottom), 'Expected panel to be above the input.');
       expect(panel.classList).toContain('mat-mdc-autocomplete-panel-above');
 
       fixture.componentInstance.trigger.closePanel();
@@ -1871,7 +1917,7 @@ describe('MDC-based MatAutocomplete', () => {
       panelRect = panel.getBoundingClientRect();
 
       expect(Math.floor(inputRect.bottom))
-          .toEqual(Math.floor(panelRect.top), 'Expected panel to be below the input.');
+        .toEqual(Math.floor(panelRect.top), 'Expected panel to be below the input.');
       expect(panel.classList).not.toContain('mat-mdc-autocomplete-panel-above');
     }));
 
@@ -1890,7 +1936,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       let options =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
       options[0].click();
       fixture.detectChanges();
       zone.simulateZoneExit();
@@ -1898,17 +1944,17 @@ describe('MDC-based MatAutocomplete', () => {
 
       let componentOptions = fixture.componentInstance.options.toArray();
       expect(componentOptions[0].selected)
-          .toBe(true, `Clicked option should be selected.`);
+        .toBe(true, `Clicked option should be selected.`);
 
       options =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
       options[1].click();
       fixture.detectChanges();
 
       expect(componentOptions[0].selected)
-          .toBe(false, `Previous option should not be selected.`);
+        .toBe(false, `Previous option should not be selected.`);
       expect(componentOptions[1].selected)
-          .toBe(true, `New Clicked option should be selected.`);
+        .toBe(true, `New Clicked option should be selected.`);
     }));
 
     it('should call deselect only on the previous selected option', fakeAsync(() => {
@@ -1916,7 +1962,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       let options =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
       options[0].click();
       fixture.detectChanges();
       zone.simulateZoneExit();
@@ -1926,10 +1972,10 @@ describe('MDC-based MatAutocomplete', () => {
       componentOptions.forEach(option => spyOn(option, 'deselect'));
 
       expect(componentOptions[0].selected)
-          .toBe(true, `Clicked option should be selected.`);
+        .toBe(true, `Clicked option should be selected.`);
 
       options =
-          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+        overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
       options[1].click();
       fixture.detectChanges();
 
@@ -1945,7 +1991,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(overlayContainerElement.querySelectorAll('mat-option')[0].classList)
-          .toContain('mat-mdc-option-active', 'Expected first option to be highlighted.');
+        .toContain('mat-mdc-option-active', 'Expected first option to be highlighted.');
     }));
 
     it('should remove aria-activedescendant when panel is closed with autoActiveFirstOption',
@@ -1953,7 +1999,7 @@ describe('MDC-based MatAutocomplete', () => {
         const input: HTMLElement = fixture.nativeElement.querySelector('input');
 
         expect(input.hasAttribute('aria-activedescendant'))
-            .toBe(false, 'Expected no active descendant on init.');
+          .toBe(false, 'Expected no active descendant on init.');
 
         fixture.componentInstance.trigger.autocomplete.autoActiveFirstOption = true;
         fixture.componentInstance.trigger.openPanel();
@@ -1962,13 +2008,13 @@ describe('MDC-based MatAutocomplete', () => {
         fixture.detectChanges();
 
         expect(input.getAttribute('aria-activedescendant'))
-            .toBeTruthy('Expected active descendant while open.');
+          .toBeTruthy('Expected active descendant while open.');
 
         fixture.componentInstance.trigger.closePanel();
         fixture.detectChanges();
 
         expect(input.hasAttribute('aria-activedescendant'))
-            .toBe(false, 'Expected no active descendant when closed.');
+          .toBe(false, 'Expected no active descendant when closed.');
       }));
 
     it('should be able to configure preselecting the first option globally', fakeAsync(() => {
@@ -1976,7 +2022,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.destroy();
       TestBed.resetTestingModule();
       fixture = createComponent(SimpleAutocomplete, [
-        {provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: {autoActiveFirstOption: true}}
+        { provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: { autoActiveFirstOption: true } }
       ]);
 
       fixture.detectChanges();
@@ -1986,7 +2032,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(overlayContainerElement.querySelectorAll('mat-option')[0].classList)
-          .toContain('mat-mdc-option-active', 'Expected first option to be highlighted.');
+        .toContain('mat-mdc-option-active', 'Expected first option to be highlighted.');
     }));
 
     it('should handle `optionSelections` being accessed too early', fakeAsync(() => {
@@ -2036,7 +2082,7 @@ describe('MDC-based MatAutocomplete', () => {
       const panelTop = panel.getBoundingClientRect().top;
 
       expect(Math.floor(inputBottom)).toBe(Math.floor(panelTop),
-          `Expected panel top to match input bottom when there is only one option.`);
+        `Expected panel top to match input bottom when there is only one option.`);
 
       clearElement(input);
       fixture.detectChanges();
@@ -2047,7 +2093,7 @@ describe('MDC-based MatAutocomplete', () => {
       const panelBottom = panel.getBoundingClientRect().bottom;
 
       expect(Math.floor(inputTop)).toBe(Math.floor(panelBottom),
-          `Expected panel switch to the above position if the options no longer fit.`);
+        `Expected panel switch to the above position if the options no longer fit.`);
     }));
 
   });
@@ -2145,8 +2191,10 @@ describe('MDC-based MatAutocomplete', () => {
   describe('with panel classes in the default options', () => {
     it('should apply them if provided as string', fakeAsync(() => {
       const fixture = createComponent(SimpleAutocomplete, [
-        {provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
-          useValue: {overlayPanelClass: 'default1'}}
+        {
+          provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
+          useValue: { overlayPanelClass: 'default1' }
+        }
       ]);
 
       fixture.detectChanges();
@@ -2154,14 +2202,16 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       const panelClassList =
-          overlayContainerElement.querySelector('.cdk-overlay-pane')!.classList;
+        overlayContainerElement.querySelector('.cdk-overlay-pane')!.classList;
       expect(panelClassList).toContain('default1');
     }));
 
     it('should apply them if provided as array', fakeAsync(() => {
       const fixture = createComponent(SimpleAutocomplete, [
-        {provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
-          useValue: {overlayPanelClass: ['default1', 'default2']}}
+        {
+          provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
+          useValue: { overlayPanelClass: ['default1', 'default2'] }
+        }
       ]);
 
       fixture.detectChanges();
@@ -2169,7 +2219,7 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       const panelClassList =
-          overlayContainerElement.querySelector('.cdk-overlay-pane')!.classList;
+        overlayContainerElement.querySelector('.cdk-overlay-pane')!.classList;
       expect(panelClassList).toContain('default1');
       expect(panelClassList).toContain('default2');
     }));
@@ -2187,7 +2237,7 @@ describe('MDC-based MatAutocomplete', () => {
         fixture.detectChanges();
 
         const options =
-            overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
+          overlayContainerElement.querySelectorAll('mat-option') as NodeListOf<HTMLElement>;
         expect(options.length).toBe(1);
       }).not.toThrowError();
     });
@@ -2217,11 +2267,11 @@ describe('MDC-based MatAutocomplete', () => {
       fixture.detectChanges();
 
       expect(fixture.componentInstance.trigger.panelOpen)
-          .toBe(true, `Expected panel state to read open when input is focused.`);
+        .toBe(true, `Expected panel state to read open when input is focused.`);
       expect(overlayContainerElement.textContent)
-          .toContain('One', `Expected panel to display when input is focused.`);
+        .toContain('One', `Expected panel to display when input is focused.`);
       expect(overlayContainerElement.textContent)
-          .toContain('Two', `Expected panel to display when input is focused.`);
+        .toContain('Two', `Expected panel to display when input is focused.`);
     });
 
     it('should filter properly with ngIf after setting the active item', () => {
@@ -2279,36 +2329,36 @@ describe('MDC-based MatAutocomplete', () => {
     }));
 
     it('should remove old classes when the panel class changes', fakeAsync(() => {
-         const fixture = createComponent(SimpleAutocomplete);
-         fixture.detectChanges();
+      const fixture = createComponent(SimpleAutocomplete);
+      fixture.detectChanges();
 
-         fixture.componentInstance.trigger.openPanel();
-         tick();
-         fixture.detectChanges();
+      fixture.componentInstance.trigger.openPanel();
+      tick();
+      fixture.detectChanges();
 
-         const classList =
-             overlayContainerElement.querySelector('.mat-mdc-autocomplete-panel')!.classList;
+      const classList =
+        overlayContainerElement.querySelector('.mat-mdc-autocomplete-panel')!.classList;
 
-         expect(classList).toContain('mat-mdc-autocomplete-visible');
-         expect(classList).toContain('class-one');
-         expect(classList).toContain('class-two');
+      expect(classList).toContain('mat-mdc-autocomplete-visible');
+      expect(classList).toContain('class-one');
+      expect(classList).toContain('class-two');
 
-         fixture.componentInstance.panelClass = 'class-three class-four';
-         fixture.detectChanges();
+      fixture.componentInstance.panelClass = 'class-three class-four';
+      fixture.detectChanges();
 
-         expect(classList).not.toContain('class-one');
-         expect(classList).not.toContain('class-two');
-         expect(classList).toContain('mat-mdc-autocomplete-visible');
-         expect(classList).toContain('class-three');
-         expect(classList).toContain('class-four');
-       }));
+      expect(classList).not.toContain('class-one');
+      expect(classList).not.toContain('class-two');
+      expect(classList).toContain('mat-mdc-autocomplete-visible');
+      expect(classList).toContain('class-three');
+      expect(classList).toContain('class-four');
+    }));
 
     it('should reset correctly when closed programmatically', fakeAsync(() => {
       const scrolledSubject = new Subject();
       const fixture = createComponent(SimpleAutocomplete, [
         {
           provide: ScrollDispatcher,
-          useValue: {scrolled: () => scrolledSubject}
+          useValue: { scrolled: () => scrolledSubject }
         },
         {
           provide: MAT_AUTOCOMPLETE_SCROLL_STRATEGY,
@@ -2503,7 +2553,7 @@ describe('MDC-based MatAutocomplete', () => {
 
       Promise.resolve().then(() => {
         let panel =
-            overlayContainerElement.querySelector('.mat-mdc-autocomplete-panel') as HTMLElement;
+          overlayContainerElement.querySelector('.mat-mdc-autocomplete-panel') as HTMLElement;
         let visibleClass = 'mat-mdc-autocomplete-visible';
 
         fixture.detectChanges();
@@ -2579,15 +2629,15 @@ describe('MDC-based MatAutocomplete', () => {
 
     dispatchKeyboardEvent(input, 'keydown', DOWN_ARROW);
     fixture.detectChanges();
-    expect(spy.calls.mostRecent().args[0]).toEqual({source: autocomplete, option: options[0]});
+    expect(spy.calls.mostRecent().args[0]).toEqual({ source: autocomplete, option: options[0] });
 
     dispatchKeyboardEvent(input, 'keydown', DOWN_ARROW);
     fixture.detectChanges();
-    expect(spy.calls.mostRecent().args[0]).toEqual({source: autocomplete, option: options[1]});
+    expect(spy.calls.mostRecent().args[0]).toEqual({ source: autocomplete, option: options[1] });
 
     dispatchKeyboardEvent(input, 'keydown', DOWN_ARROW);
     fixture.detectChanges();
-    expect(spy.calls.mostRecent().args[0]).toEqual({source: autocomplete, option: options[2]});
+    expect(spy.calls.mostRecent().args[0]).toEqual({ source: autocomplete, option: options[2] });
   }));
 
   it('should be able to set a custom panel connection element', () => {
@@ -2601,11 +2651,11 @@ describe('MDC-based MatAutocomplete', () => {
     zone.simulateZoneExit();
 
     const overlayRect =
-        overlayContainerElement.querySelector('.cdk-overlay-pane')!.getBoundingClientRect();
+      overlayContainerElement.querySelector('.cdk-overlay-pane')!.getBoundingClientRect();
     const originRect = fixture.nativeElement.querySelector('.origin').getBoundingClientRect();
 
     expect(Math.floor(overlayRect.top)).toBe(Math.floor(originRect.bottom),
-        'Expected autocomplete panel to align with the bottom of the new origin.');
+      'Expected autocomplete panel to align with the bottom of the new origin.');
   });
 
   it('should be able to change the origin after the panel has been opened', () => {
@@ -2627,11 +2677,11 @@ describe('MDC-based MatAutocomplete', () => {
     zone.simulateZoneExit();
 
     const overlayRect =
-        overlayContainerElement.querySelector('.cdk-overlay-pane')!.getBoundingClientRect();
+      overlayContainerElement.querySelector('.cdk-overlay-pane')!.getBoundingClientRect();
     const originRect = fixture.nativeElement.querySelector('.origin').getBoundingClientRect();
 
     expect(Math.floor(overlayRect.top)).toBe(Math.floor(originRect.bottom),
-        'Expected autocomplete panel to align with the bottom of the new origin.');
+      'Expected autocomplete panel to align with the bottom of the new origin.');
   });
 
   it('should be able to re-type the same value when it is reset while open', fakeAsync(() => {
@@ -2682,6 +2732,7 @@ describe('MDC-based MatAutocomplete', () => {
 
 const SIMPLE_AUTOCOMPLETE_TEMPLATE = `
   <mat-form-field [floatLabel]="floatLabel" [style.width.px]="width">
+    <mat-label>State</mat-label>
     <input
       matInput
       placeholder="State"
@@ -2692,7 +2743,8 @@ const SIMPLE_AUTOCOMPLETE_TEMPLATE = `
   </mat-form-field>
 
   <mat-autocomplete [class]="panelClass" #auto="matAutocomplete" [displayWith]="displayFn"
-    [disableRipple]="disableRipple" (opened)="openedSpy()" (closed)="closedSpy()">
+    [disableRipple]="disableRipple" [aria-label]="ariaLabel" [aria-labelledby]="ariaLabelledby"
+    (opened)="openedSpy()" (closed)="closedSpy()">
     <mat-option
       *ngFor="let state of filteredStates"
       [value]="state"
@@ -2702,7 +2754,7 @@ const SIMPLE_AUTOCOMPLETE_TEMPLATE = `
   </mat-autocomplete>
 `;
 
-@Component({template: SIMPLE_AUTOCOMPLETE_TEMPLATE})
+@Component({ template: SIMPLE_AUTOCOMPLETE_TEMPLATE })
 class SimpleAutocomplete implements OnDestroy {
   stateCtrl = new FormControl();
   filteredStates: any[];
@@ -2712,27 +2764,29 @@ class SimpleAutocomplete implements OnDestroy {
   width: number;
   disableRipple = false;
   autocompleteDisabled = false;
+  ariaLabel: string;
+  ariaLabelledby: string;
   panelClass = 'class-one class-two';
   openedSpy = jasmine.createSpy('autocomplete opened spy');
   closedSpy = jasmine.createSpy('autocomplete closed spy');
 
-  @ViewChild(MatAutocompleteTrigger, {static: true}) trigger: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger, { static: true }) trigger: MatAutocompleteTrigger;
   @ViewChild(MatAutocomplete) panel: MatAutocomplete;
   @ViewChild(MatFormField) formField: MatFormField;
   @ViewChildren(MatOption) options: QueryList<MatOption>;
 
-  states: {code: string, name: string, height?: number}[] = [
-    {code: 'AL', name: 'Alabama'},
-    {code: 'CA', name: 'California'},
-    {code: 'FL', name: 'Florida'},
-    {code: 'KS', name: 'Kansas'},
-    {code: 'MA', name: 'Massachusetts'},
-    {code: 'NY', name: 'New York'},
-    {code: 'OR', name: 'Oregon'},
-    {code: 'PA', name: 'Pennsylvania'},
-    {code: 'TN', name: 'Tennessee'},
-    {code: 'VA', name: 'Virginia'},
-    {code: 'WY', name: 'Wyoming'},
+  states: { code: string, name: string, height?: number }[] = [
+    { code: 'AL', name: 'Alabama' },
+    { code: 'CA', name: 'California' },
+    { code: 'FL', name: 'Florida' },
+    { code: 'KS', name: 'Kansas' },
+    { code: 'MA', name: 'Massachusetts' },
+    { code: 'NY', name: 'New York' },
+    { code: 'OR', name: 'Oregon' },
+    { code: 'PA', name: 'Pennsylvania' },
+    { code: 'TN', name: 'Tennessee' },
+    { code: 'VA', name: 'Virginia' },
+    { code: 'WY', name: 'Wyoming' },
   ];
 
 
@@ -2740,7 +2794,7 @@ class SimpleAutocomplete implements OnDestroy {
     this.filteredStates = this.states;
     this.valueSub = this.stateCtrl.valueChanges.subscribe(val => {
       this.filteredStates = val ? this.states.filter((s) => s.name.match(new RegExp(val, 'gi')))
-                                : this.states;
+        : this.states;
     });
   }
 
@@ -2753,7 +2807,7 @@ class SimpleAutocomplete implements OnDestroy {
   }
 }
 
-@Component({template: SIMPLE_AUTOCOMPLETE_TEMPLATE, encapsulation: ViewEncapsulation.ShadowDom})
+@Component({ template: SIMPLE_AUTOCOMPLETE_TEMPLATE, encapsulation: ViewEncapsulation.ShadowDom })
 class SimpleAutocompleteShadowDom extends SimpleAutocomplete {
 }
 
@@ -2784,7 +2838,7 @@ class NgIfAutocomplete {
       startWith(null),
       map((val: string) => {
         return val ? this.options.filter(option => new RegExp(val, 'gi').test(option))
-                    : this.options.slice();
+          : this.options.slice();
       }));
   }
 }
@@ -2911,7 +2965,7 @@ class AutocompleteWithNativeInput {
       startWith(null),
       map((val: string) => {
         return val ? this.options.filter(option => new RegExp(val, 'gi').test(option))
-                    : this.options.slice();
+          : this.options.slice();
       }));
   }
 }
@@ -2977,7 +3031,7 @@ class AutocompleteWithGroups {
     </mat-autocomplete>
   `
 })
-class AutocompleteWithIndirectGroups extends AutocompleteWithGroups {}
+class AutocompleteWithIndirectGroups extends AutocompleteWithGroups { }
 
 @Component({
   template: `
