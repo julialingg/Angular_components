@@ -1,14 +1,14 @@
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
-import {Component, DebugElement} from '@angular/core';
-import {By} from '@angular/platform-browser';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
   createKeyboardEvent,
   dispatchEvent,
 } from '@angular/cdk/testing/private';
-import {SPACE, ENTER} from '@angular/cdk/keycodes';
-import {MatOption, MatOptionModule} from './index';
+import { SPACE, ENTER } from '@angular/cdk/keycodes';
+import { MatOption, MatOptionModule, MAT_OPTION_PARENT_COMPONENT } from './index';
 
 describe('MatOption component', () => {
 
@@ -24,9 +24,9 @@ describe('MatOption component', () => {
     fixture.detectChanges();
 
     const optionInstance: MatOption =
-        fixture.debugElement.query(By.directive(MatOption))!.componentInstance;
+      fixture.debugElement.query(By.directive(MatOption))!.componentInstance;
     const completeSpy = jasmine.createSpy('complete spy');
-    const subscription = optionInstance._stateChanges.subscribe({complete: completeSpy});
+    const subscription = optionInstance._stateChanges.subscribe({ complete: completeSpy });
 
     fixture.destroy();
     expect(completeSpy).toHaveBeenCalled();
@@ -38,7 +38,7 @@ describe('MatOption component', () => {
     fixture.detectChanges();
 
     const optionInstance: MatOption =
-        fixture.debugElement.query(By.directive(MatOption))!.componentInstance;
+      fixture.debugElement.query(By.directive(MatOption))!.componentInstance;
 
     optionInstance.select();
     expect(optionInstance.selected).toBe(true);
@@ -60,7 +60,7 @@ describe('MatOption component', () => {
     fixture.detectChanges();
 
     const optionInstance: MatOption =
-        fixture.debugElement.query(By.directive(MatOption))!.componentInstance;
+      fixture.debugElement.query(By.directive(MatOption))!.componentInstance;
 
     optionInstance.deselect();
     expect(optionInstance.selected).toBe(false);
@@ -136,7 +136,7 @@ describe('MatOption component', () => {
 
     [ENTER, SPACE].forEach(key => {
       const event = createKeyboardEvent('keydown', key);
-      Object.defineProperty(event, 'shiftKey', {get: () => true});
+      Object.defineProperty(event, 'shiftKey', { get: () => true });
       dispatchEvent(optionNativeElement, event);
       fixture.detectChanges();
 
@@ -197,6 +197,38 @@ describe('MatOption component', () => {
     expect(optionNativeElement.classList.contains('mat-mdc-focus-indicator')).toBe(true);
   });
 
+  describe('inside inert group', () => {
+    let fixture: ComponentFixture<InsideGroup>;
+
+    beforeEach(waitForAsync(() => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [MatOptionModule],
+        declarations: [InsideGroup],
+        providers: [{
+          provide: MAT_OPTION_PARENT_COMPONENT,
+          useValue: { inertGroups: true }
+        }]
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(InsideGroup);
+      fixture.detectChanges();
+    }));
+
+    it('should remove all accessibility-related attributes from the group', () => {
+      const group: HTMLElement = fixture.nativeElement.querySelector('mat-optgroup');
+      expect(group.hasAttribute('role')).toBe(false);
+      expect(group.hasAttribute('aria-disabled')).toBe(false);
+      expect(group.hasAttribute('aria-labelledby')).toBe(false);
+    });
+
+    it('should mirror the group label inside the option', () => {
+      const option: HTMLElement = fixture.nativeElement.querySelector('mat-option');
+      expect(option.textContent?.trim()).toBe('Option(Group)');
+    });
+  });
+
+
 });
 
 @Component({
@@ -205,4 +237,15 @@ describe('MatOption component', () => {
 class BasicOption {
   disabled: boolean;
   id: string;
+}
+
+
+@Component({
+  template: `
+    <mat-optgroup label="Group">
+      <mat-option>Option</mat-option>
+    </mat-optgroup>
+  `
+})
+class InsideGroup {
 }
