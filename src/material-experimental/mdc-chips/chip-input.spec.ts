@@ -1,17 +1,17 @@
-import {Directionality} from '@angular/cdk/bidi';
-import {ENTER, COMMA, TAB} from '@angular/cdk/keycodes';
-import {PlatformModule} from '@angular/cdk/platform';
+import { Directionality } from '@angular/cdk/bidi';
+import { ENTER, COMMA, TAB } from '@angular/cdk/keycodes';
+import { PlatformModule } from '@angular/cdk/platform';
 import {
   createKeyboardEvent,
   dispatchKeyboardEvent,
   dispatchEvent,
 } from '@angular/cdk/testing/private';
-import {Component, DebugElement, ViewChild} from '@angular/core';
-import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {Subject} from 'rxjs';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { Subject } from 'rxjs';
 import {
   MAT_CHIPS_DEFAULT_OPTIONS,
   MatChipInput,
@@ -95,7 +95,7 @@ describe('MDC-based MatChipInput', () => {
       expect(label.textContent).toContain('or don\'t');
     });
 
-    it('should become disabled if the chip list is disabled', () => {
+    it('should become disabled if the chip grid is disabled', () => {
       expect(inputNativeElement.hasAttribute('disabled')).toBe(false);
       expect(chipInputDirective.disabled).toBe(false);
 
@@ -104,6 +104,15 @@ describe('MDC-based MatChipInput', () => {
 
       expect(inputNativeElement.getAttribute('disabled')).toBe('true');
       expect(chipInputDirective.disabled).toBe(true);
+    });
+
+    it('should be aria-required if the chip grid is required', () => {
+      expect(inputNativeElement.hasAttribute('aria-required')).toBe(false);
+
+      fixture.componentInstance.required = true;
+      fixture.detectChanges();
+
+      expect(inputNativeElement.getAttribute('aria-required')).toBe('true');
     });
 
     it('should allow focus to escape when tabbing forwards', fakeAsync(() => {
@@ -127,7 +136,7 @@ describe('MDC-based MatChipInput', () => {
     it('should not allow focus to escape when tabbing backwards', fakeAsync(() => {
       const gridElement: HTMLElement = fixture.nativeElement.querySelector('mat-chip-grid');
       const event = createKeyboardEvent('keydown', TAB, undefined, inputNativeElement);
-      Object.defineProperty(event, 'shiftKey', {get: () => true});
+      Object.defineProperty(event, 'shiftKey', { get: () => true });
 
       expect(gridElement.getAttribute('tabindex')).toBe('0');
 
@@ -210,7 +219,7 @@ describe('MDC-based MatChipInput', () => {
           declarations: [TestChipInput],
           providers: [{
             provide: MAT_CHIPS_DEFAULT_OPTIONS,
-            useValue: ({separatorKeyCodes: [COMMA]} as MatChipsDefaultOptions)
+            useValue: ({ separatorKeyCodes: [COMMA] } as MatChipsDefaultOptions)
           }]
         })
         .compileComponents();
@@ -227,13 +236,13 @@ describe('MDC-based MatChipInput', () => {
       fixture.detectChanges();
 
       chipInputDirective._keydown(
-          createKeyboardEvent('keydown', COMMA, undefined, inputNativeElement));
+        createKeyboardEvent('keydown', COMMA, undefined, inputNativeElement));
       expect(testChipInput.add).toHaveBeenCalled();
     });
 
     it('should not emit the chipEnd event if a separator is pressed with a modifier key', () => {
       const ENTER_EVENT = createKeyboardEvent('keydown', ENTER, undefined, inputNativeElement);
-      Object.defineProperty(ENTER_EVENT, 'shiftKey', {get: () => true});
+      Object.defineProperty(ENTER_EVENT, 'shiftKey', { get: () => true });
       spyOn(testChipInput, 'add');
 
       chipInputDirective.separatorKeyCodes = [ENTER];
@@ -249,7 +258,7 @@ describe('MDC-based MatChipInput', () => {
 @Component({
   template: `
     <mat-form-field>
-      <mat-chip-grid #chipGrid>
+      <mat-chip-grid #chipGrid [required]="required">
         <mat-chip-row>Hello</mat-chip-row>
         <input matInput [matChipInputFor]="chipGrid"
                   [matChipInputAddOnBlur]="addOnBlur"
@@ -263,6 +272,7 @@ class TestChipInput {
   @ViewChild(MatChipGrid) chipGridInstance: MatChipGrid;
   addOnBlur: boolean = false;
   placeholder = '';
+  required = false;
 
   add(_: MatChipInputEvent) {
   }
