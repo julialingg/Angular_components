@@ -1,0 +1,13 @@
+# Auto-generated Dockerfile for PR 29793
+FROM node:18.19.1
+
+# Install yarn with --force
+RUN npm install -g --force yarn@1.22.17
+# Set working directory
+WORKDIR /app
+# Copy source code from build context
+COPY . .
+RUN git checkout 29793
+RUN yarn install
+# Default command
+CMD ["yarn", "test"]
