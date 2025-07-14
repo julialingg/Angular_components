@@ -9,6 +9,6 @@ WORKDIR /app
 COPY . .
 RUN git checkout 29793
 RUN yarn install
-RUN ln -s /app /root/repos/app
+RUN mkdir -p /root/repos && ln -s /app /root/repos/app
 # Default command
 CMD ["yarn", "test", "src/material/chips"]
