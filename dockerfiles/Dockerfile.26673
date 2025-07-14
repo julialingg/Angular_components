@@ -8,4 +8,5 @@ WORKDIR /app
 COPY . .
 RUN git checkout 26673
 RUN yarn install
-CMD ["yarn", "test"]
+RUN ln -s /app /root/repos/app
+CMD ["yarn", "test", "src/material/select"]
