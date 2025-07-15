@@ -1,4 +1,4 @@
-# 使用 Node.js 16 + Debian Bullseye（不是旧的 buster）
+# 使用 Node.js 16 + Debian Bullseye
 FROM node:16-bullseye
 
 # 安装构建 Python 所需依赖和基础工具
@@ -7,9 +7,11 @@ RUN apt-get update && apt-get install -y \
     libssl-dev zlib1g-dev libncurses5-dev libncursesw5-dev \
     libreadline-dev libsqlite3-dev libgdbm-dev libdb5.3-dev \
     libbz2-dev libexpat1-dev liblzma-dev tk-dev \
+    libnss3 libxss1 libasound2 libatk-bridge2.0-0 libx11-xcb1 \
+    libdrm2 libgbm1 libgtk-3-0 fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
 
-# 下载并编译安装 Python 3.10
+# 安装 Python 3.10
 RUN curl -O https://www.python.org/ftp/python/3.10.14/Python-3.10.14.tgz && \
     tar -xzf Python-3.10.14.tgz && \
     cd Python-3.10.14 && \
@@ -18,31 +20,27 @@ RUN curl -O https://www.python.org/ftp/python/3.10.14/Python-3.10.14.tgz && \
     make altinstall && \
     cd .. && rm -rf Python-3.10.14 Python-3.10.14.tgz
 
-# 设置 python 和 pip 默认使用 Python 3.10
+# 设置默认 python 和 pip
 RUN ln -sf /usr/local/bin/python3.10 /usr/bin/python && \
     ln -sf /usr/local/bin/python3.10 /usr/bin/python3 && \
     ln -sf /usr/local/bin/pip3.10 /usr/bin/pip
 
-# 安装 yarn（如项目需要）
 RUN npm install -g --force yarn@1.22.17
 
 # 安装 SWE-ReX
 RUN pip install git+https://github.com/SWE-agent/SWE-ReX.git
 
-# Set working directory
+# 设置工作目录
 WORKDIR /app
 
-# Copy source code from build context
+# 拷贝代码
 COPY . .
-
-# Checkout specific PR
 RUN git checkout 26673
-
-# Install project dependencies
 RUN yarn install
-
-# Link repo for SWE-agent access
 RUN mkdir -p /root/repos && ln -s /app /root/repos/app
 
-# Default command
+# 设置 Karma 无沙箱模式环境变量
+ENV CHROME_BIN=/usr/bin/google-chrome \
+    CHROMIUM_FLAGS="--no-sandbox --disable-dev-shm-usage"
+# 默认测试命令
 CMD ["yarn", "test", "src/material/select"]
