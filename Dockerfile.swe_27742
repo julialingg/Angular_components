@@ -7,6 +7,19 @@ RUN apt-get update && \
     apt-get install -y python3 python3-pip git && \
     ln -s /usr/bin/python3 /usr/bin/python
 
+# Install libraries required for Chrome Headless
+RUN apt-get install -y \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libx11-xcb1 \
+    libdrm2 \
+    libgbm1 \
+    fonts-liberation \
+    libgtk-3-0 \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install yarn
 RUN npm install -g --force yarn@1.22.17
 
